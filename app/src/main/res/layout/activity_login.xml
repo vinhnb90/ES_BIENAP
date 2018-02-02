@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background2"
+    tools:context="vn.com.esolutions.es_bienap.LoginActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/xml_background_gradient">
+
+        <TextView
+            android:id="@+id/tv_title_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_150sdp"
+            android:fontFamily="@font/helveticaneuecondensedbold"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/_10sdp"
+            android:text="QUẢN LÝ THIẾT BỊ"
+            android:textColor="@color/colorTextTitle"
+            android:textSize="@dimen/_15sdp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_title_1"
+            android:fontFamily="@font/helveticaneuelightitalic"
+            android:gravity="center_horizontal"
+            android:text="Kiểm tra mã vạch và quản lý tài sản"
+            android:textColor="@color/colorTextTitle"
+            android:textSize="@dimen/_10sdp"
+            android:textStyle="bold" />
+
+
+        <TextView
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:id="@+id/tv_company"
+            android:fontFamily="@font/helveticaneuelightitalic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="Phần mềm bản quyền công ty Esolutions"
+            android:textColor="@color/colorTextTitle" />
+
+        <Button
+            android:id="@+id/btn_login_admin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_company"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:background="@drawable/xml_border_full"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:fontFamily="@font/helveticaneuelight"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="@dimen/_10sdp"
+            android:text="ĐĂNG NHẬP VỚI NGƯỜI QUẢN LÝ"
+            android:textColor="@color/colorTextTitle"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btn_login_emp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_login_admin"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:background="@drawable/xml_border_full"
+            android:drawableRight="@drawable/ic_arrow_right"
+            android:fontFamily="@font/helveticaneuelight"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="@dimen/_10sdp"
+            android:text="ĐĂNG NHẬP VỚI NHÂN VIÊN"
+            android:textColor="@color/colorTextTitle"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</RelativeLayout>
