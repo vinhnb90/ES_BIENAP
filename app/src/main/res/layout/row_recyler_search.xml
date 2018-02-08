@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/_10sdp"
+    android:paddingRight="@dimen/_10sdp"
+    android:background="@color/colorBackgroundRow">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="@dimen/_24sdp"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/xml_circle"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_edit_note_menu"
+            tools:src="@drawable/ic_done_task" />
+
+        <TextView
+            android:id="@+id/tv_title_row"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_toRightOf="@+id/iv_status"
+            android:text="Phiếu kiểm tra máy biến áp lực 110 KV"
+            android:textColor="@color/colorTextTitle"
+            android:textSize="@dimen/_10sdp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_title">
+
+        <RelativeLayout
+            android:id="@+id/rl_collumn"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="@dimen/_3sdp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorItem">
+
+            </View>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_toRightOf="@+id/rl_collumn">
+
+            <ImageView
+                android:id="@+id/iv_status_row"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_scan_barcode_date" />
+
+            <TextView
+                android:id="@+id/tv_date_row"
+                style="@style/tvStyle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_toRightOf="@+id/iv_status_row"
+                android:text="20-12-2017" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_date">
+
+        <RelativeLayout
+            android:id="@+id/rl_collumn_date"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="@dimen/_3sdp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorItem">
+
+            </View>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_toRightOf="@+id/rl_collumn_date">
+
+            <ImageView
+                android:id="@+id/iv_status_row_date"
+                android:layout_width="@dimen/_10sdp"
+                android:layout_height="@dimen/_10sdp"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_done_task" />
+
+            <TextView
+                android:id="@+id/tv_status_row"
+                style="@style/tvStyle1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_8sdp"
+                android:layout_toRightOf="@+id/iv_status_row_date"
+                android:text="Đã chỉnh sửa xong" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rl_status">
+
+        <RelativeLayout
+            android:id="@+id/rl_collumn_menu"
+            android:layout_width="@dimen/_24sdp"
+            android:layout_height="match_parent">
+
+            <View
+                android:layout_width="@dimen/_3sdp"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorItem">
+
+            </View>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/_16sdp"
+            android:layout_toRightOf="@+id/rl_collumn_menu"
+            android:paddingTop="@dimen/_10sdp"
+            >
+
+            <CheckBox
+                android:layoutDirection="rtl"
+                android:buttonTint="#fff"
+                android:id="@+id/cb_choose_row"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_24sdp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:backgroundTint="#fff"
+                android:text="Chọn"
+                android:textColor="@color/colorTextTitle" />
+
+
+          <RelativeLayout
+              android:layout_toRightOf="@+id/cb_choose_row"
+              android:layout_centerVertical="true"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content">
+              <Button
+                  android:id="@+id/btn_upload_row"
+                  android:layout_width="wrap_content"
+                  android:layout_height="@dimen/_24sdp"
+                  android:layout_alignParentRight="true"
+                  android:layout_marginRight="@dimen/_16sdp"
+                  android:background="@null"
+                  android:drawablePadding="@dimen/_5sdp"
+                  android:drawableRight="@drawable/ic_upload_menu"
+                  android:text="Phát hành"
+                  android:textColor="@color/colorTextTitle" />
+
+              <Button
+                  android:id="@+id/btn_edit_row"
+                  android:layout_width="wrap_content"
+                  android:layout_height="@dimen/_24sdp"
+                  android:layout_marginRight="@dimen/_24sdp"
+                  android:layout_toLeftOf="@+id/btn_upload_row"
+                  android:background="@null"
+                  android:drawablePadding="@dimen/_5sdp"
+                  android:drawableRight="@drawable/ic_edit_note_menu"
+                  android:text="Chỉnh sửa"
+                  android:textColor="@color/colorTextTitle" />
+
+              <View
+                  android:layout_margin="@dimen/_10sdp"
+                  android:layout_toLeftOf="@+id/btn_edit_row"
+                  android:layout_centerVertical="true"
+                  android:layout_alignParentLeft="true"
+                  android:background="#fff"
+                  android:layout_width="match_parent"
+                  android:layout_height="@dimen/_1sdp"/>
+          </RelativeLayout>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

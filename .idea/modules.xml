@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/ES_BIENAP.iml" filepath="$PROJECT_DIR$/ES_BIENAP.iml" />
       <module fileurl="file://$PROJECT_DIR$/EsDatabaseLib/EsDatabaseLib.iml" filepath="$PROJECT_DIR$/EsDatabaseLib/EsDatabaseLib.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/calligraphy-2.2.0/calligraphy-2.2.0.iml" filepath="$PROJECT_DIR$/calligraphy-2.2.0/calligraphy-2.2.0.iml" />
     </modules>
   </component>
 </project>

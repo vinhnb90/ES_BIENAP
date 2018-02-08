@@ -56,6 +56,9 @@ public abstract class BaseActivity extends AppCompatActivity implements IBaseVie
     protected void setupFullScreen() {
         //full screen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+    protected void hideAppbar(){
         try {
             getSupportActionBar().hide();
         } catch (Exception e) {

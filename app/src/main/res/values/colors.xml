@@ -5,4 +5,50 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorTextTitle">#FFF</color>
+    <color name="colorItem">#33A69B</color>
+    <color name="colorBackgroundRow">#32394C</color>
+    <color name="colorBackgroundHome">@color/colorBackgroundRow</color>
+    <color name="colorButton">#998723</color>
+
+
+    <!-- Ttht HN -->
+    <color name="tththn_navi_menu">#37474F</color>
+    <color name="tththn_navi_menu_bottom">#FF5722</color>
+    <color name="tththn_navi_menu_icon">#fff</color>
+    <color name="tththn_navi_menu_icon_default">#263238</color>
+
+    <color name="tththn_row_recyler">#ff6e13</color>
+    <color name="tththn_text_little_black">#90000000</color>
+    <color name="tththn_text_less_black">#80000000</color>
+    <color name="tththn_text_more_less_black">#50000000</color>
+    <color name="tththn_edited_row_recyler">#348ec9</color>
+    <color name="tththn_submited_row_recyler">@color/tththn_navi_menu_icon</color>
+
+    <color name="tththn_button">#FF5722</color>
+    <color name="tththn_transparent">#40000000</color>
+
+
+    <color name="tththn_background_lv1">#FFFFFF</color>
+    <color name="tththn_background_lv2">#EEEEEE</color>
+    <color name="tththn_background_lv3">#70448AFF</color>
+    <color name="tththn_background_lv4">#448AFF</color>
+    <color name="tththn_background_lv5">#90FFFF</color>
+
+    <color name="tththn_background_chua_ghi">@color/tththn_background_lv3</color>
+    <color name="tththn_background_da_ghi">@color/tththn_button</color>
+    <color name="tththn_background_da_gui">#90000000</color>
+
+
+    <color name="tththn_trangthai_dulieu_chuaghi">#fff</color>
+    <color name="tththn_trangthai_dulieu_da_ghi">#448AFF</color>
+    <color name="tththn_trangthai_dulieu_dangcho_xacnhan">#95FF5722</color>
+    <color name="tththn_trangthai_dulieu_da_tontai_truocdo">#000</color>
+    <color name="tththn_trangthai_dulieu_da_xacnhan_cmis">@color/tththn_button</color>
+    <color name="tththn_trangthai_dulieu_het_hieuluc">@color/tththn_trangthai_dulieu_da_tontai_truocdo</color>
+
+
+    <color name="tththn_doisoat_dadoisoat">@color/tththn_button</color>
+    <color name="tththn_doisoat_guithanhcong">#99e600</color>
+    <color name="tththn_doisoat_guithatbai">@color/tththn_text_less_black</color>
+
 </resources>

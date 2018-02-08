@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs>
+    <tab
+        barColorWhenSelected="@android:color/white"
+        icon="@drawable/ic_home"
+        id="@+id/bbar_home_menu"
+        title="Chức năng" />
+
+    <tab
+        barColorWhenSelected="@android:color/white"
+        icon="@drawable/ic_device_menu"
+        id="@+id/bbar_manage_device_menu"
+        title="Quản lý thiết bị" />
+
+ <!--   <tab
+        barColorWhenSelected="@android:color/white"
+        icon="@drawable/ic_upload_menu"
+        id="@+id/bbar_upload_menu"
+        title="Chọn và gửi" />-->
+
+    <tab
+        barColorWhenSelected="@android:color/white"
+        icon="@drawable/ic_edit_note_menu"
+        id="@+id/bbar_edit_note_menu"
+        title="Quản lý câu hỏi" />
+
+    <tab
+        barColorWhenSelected="@android:color/white"
+        icon="@drawable/ic_history"
+        id="@+id/bbar_history_upload_menu"
+        title="Lịch sử dữ liệu" />
+</tabs>

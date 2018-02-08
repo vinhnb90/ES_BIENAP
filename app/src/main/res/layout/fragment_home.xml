@@ -1,0 +1,169 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:background="@color/colorBackgroundHome"
+    android:background="@null"
+    tools:context="vn.com.esolutions.es_bienap.HomeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/ll_menu1"
+            android:layout_width="@dimen/_250sdp"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <LinearLayout
+                android:id="@+id/ll_collumn_menu_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    >
+
+                    <ImageButton
+                        android:id="@+id/ibtn_manager_device"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:scaleType="centerCrop"
+                        android:padding="@dimen/_10sdp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/xml_circle"
+                        android:src="@drawable/ic_device_menu" />
+
+                    <TextView
+                        android:id="@+id/tv_device"
+                        android:fontFamily="@font/helveticaneuelight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ibtn_manager_device"
+                        android:layout_centerHorizontal="true"
+                        android:text="Quản lý thiết bị"
+                        android:textColor="@color/colorTextTitle"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <View
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:id="@+id/v_divide_2"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_below="@+id/tv_device"
+                        android:background="@color/colorTextTitle" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+            >
+
+                    <ImageButton
+                        android:id="@+id/ibtn_manager_report"
+                        android:layout_width="@dimen/_40sdp"
+                        android:layout_height="@dimen/_40sdp"
+                        android:scaleType="centerCrop"
+                        android:padding="@dimen/_10sdp"
+                        android:layout_alignParentTop="true"
+                        android:layout_centerHorizontal="true"
+                        android:background="@drawable/xml_circle"
+                        android:src="@drawable/ic_report"/>
+
+
+                    <TextView
+                        android:id="@+id/tv_bb"
+                        android:fontFamily="@font/helveticaneuelight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ibtn_manager_report"
+                        android:layout_centerHorizontal="true"
+                        android:text="Quản lý biên bản"
+                        android:textColor="@color/colorTextTitle"
+                        android:textSize="@dimen/_14sdp" />
+
+                    <View
+                        android:layout_marginTop="@dimen/_15sdp"
+                        android:id="@+id/v_divide_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_1sdp"
+                        android:layout_below="@+id/tv_bb"
+                        android:background="@color/colorTextTitle" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/ll_menu2"
+            android:layout_width="@dimen/_200sdp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_menu1"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_10sdp"
+            android:weightSum="2">
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                >
+
+                <ImageButton
+                    android:id="@+id/ibtn_update"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:scaleType="centerCrop"
+                    android:padding="@dimen/_10sdp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/xml_circle"
+                    android:src="@drawable/ic_upload_menu"/>
+
+
+                <TextView
+                    android:id="@+id/tv_update"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ibtn_update"
+                    android:layout_centerHorizontal="true"
+                    android:text="Lịch sử đồng bộ"
+                    android:fontFamily="@font/helveticaneuelight"
+                    android:textSize="@dimen/_14sdp"
+                    android:textColor="@color/colorTextTitle"
+                    />
+
+
+                <View
+                    android:layout_marginTop="@dimen/_15sdp"
+                    android:id="@+id/v_divide_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_1sdp"
+                    android:layout_below="@+id/tv_update"
+                    android:background="@color/colorTextTitle" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

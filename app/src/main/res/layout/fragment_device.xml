@@ -1,0 +1,368 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@null"
+    tools:background="@color/colorBackgroundHome"
+    tools:context="vn.com.esolutions.es_bienap.DeviceFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/ll_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btn_add"
+                style="@style/MenuButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_add_device"
+                android:fontFamily="@font/helveticaneuelightitalic"
+                android:text="Thêm mới thiết bị"
+                android:textColor="@color/colorTextTitle"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_search"
+                style="@style/MenuButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_search_menu"
+                android:fontFamily="@font/helveticaneuelightitalic"
+                android:text="Tìm thiết bị"
+                android:textColor="@color/colorTextTitle"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btn_upload"
+                style="@style/MenuButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:drawableTop="@drawable/ic_upload_menu"
+                android:fontFamily="@font/helveticaneuelightitalic"
+                android:text="Gửi thiết bị"
+                android:textColor="@color/colorTextTitle"
+                android:textSize="@dimen/_10sdp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/rl_add_device"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/ll_menu"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:padding="@dimen/_16sdp"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:id="@+id/ll_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/tvStyle3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Mã thiết bị" />
+
+                <TextView
+                    android:id="@+id/tv_ma_thietbi"
+                    style="@style/tvStyle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ahdh1456465464" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_1"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/tvStyle3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nhập tên thiết bị" />
+
+                <EditText
+                    android:id="@+id/et_nhap_ten_thietbi"
+                    style="@style/tvStyle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    tools:text="ahdh1456465464" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_2"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/tvStyle3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nhập Địa chỉ thiết bị" />
+
+                <EditText
+                    android:id="@+id/et_nhap_diachi_thietbi"
+                    style="@style/tvStyle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    tools:text="ahdh1456465464" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_3"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="right"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/MenuButton"
+                    android:id="@+id/btn_save_thietbi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:drawableRight="@drawable/ic_save"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Lưu thiết bị"
+                    android:textSize="@dimen/_10sdp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorTextTitle" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_search_device"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_add_device"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/rl_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="@dimen/_10sdp"
+                    android:paddingRight="@dimen/_10sdp">
+
+                    <Button
+                        android:id="@+id/btn_search_server"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/_24sdp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/xml_border_full_1"
+                        android:drawableRight="@drawable/ic_search_menu"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp"
+                        android:text="TÌM KIẾM"
+                        android:textColor="@color/colorTextTitle"
+                        android:textSize="@dimen/_8sdp"></Button>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_24sdp"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:layout_toLeftOf="@+id/btn_search_server"
+                        android:background="@drawable/xml_border_full_1"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="@dimen/_5sdp"
+                        android:paddingRight="@dimen/_5sdp">
+
+                        <ImageButton
+                            android:id="@+id/ibtn_clear_search"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:background="@null"
+                            android:src="@drawable/ic_clear_search" />
+
+                        <EditText
+                            android:id="@+id/et_search"
+                            style="@style/etStyle1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_toLeftOf="@+id/ibtn_clear_search"
+                            android:background="@null"
+                            android:hint="Thông tin..."
+                            android:textColorHint="@color/colorTextTitle" />
+                    </RelativeLayout>
+                </RelativeLayout>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/rv_list_device"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/rl_search"
+                    android:layout_marginTop="@dimen/_10sdp"></android.support.v7.widget.RecyclerView>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/rl_upload_device"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/rl_search_device"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:paddingLeft="@dimen/_10sdp"
+            android:paddingRight="@dimen/_10sdp">
+
+            <LinearLayout
+                android:id="@+id/ll_1_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/tvStyle3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Tổng thiết bị" />
+
+                <TextView
+                    android:id="@+id/tv_total_device"
+                    style="@style/tvStyle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="815" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_2_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_1_1"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/tvStyle3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Số thiết bị chọn" />
+
+                <TextView
+                    android:id="@+id/tv_count_device_choose"
+                    style="@style/tvStyle2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="815" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/ll_3_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_2_1"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:orientation="vertical">
+
+                <TextView
+                    style="@style/tvStyle3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Quá trình gửi" />
+
+
+                <ProgressBar
+                    android:id="@+id/pbar_upload"
+                    style="@android:style/Widget.ProgressBar.Horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:progress="0"
+                    android:progressDrawable="@drawable/xml_pbar_custom" />
+
+                <TextView
+                    android:id="@+id/tv_count_percent"
+                    style="@style/tvStyle3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:gravity="center_horizontal"
+                    android:text="30%" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_4_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ll_3_1"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_upload_device"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:drawableRight="@drawable/ic_upload_menu"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:text="Gửi thiết bị"
+                    android:textAllCaps="false"
+                    android:textColor="@color/colorTextTitle" />
+
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</android.support.design.widget.CoordinatorLayout>

@@ -2,6 +2,7 @@ package vn.com.esolutions.es_bienap;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -11,6 +12,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import esolutions.com.esdatabaselib.baseSqlite.SqlHelper;
+import esolutions.com.esdatabaselib.example.activity.DatabaseActivity;
+import esolutions.com.esdatabaselib.example.source.sqliteConfig.ClassRoom;
+import esolutions.com.esdatabaselib.example.source.sqliteConfig.ESDbConfig;
+import esolutions.com.esdatabaselib.example.source.sqliteConfig.Student;
+import vn.com.esolutions.es_bienap.database.DATABASE_CONFIG;
+import vn.com.esolutions.es_bienap.database.TABLE_ANSWER_REPORT;
+import vn.com.esolutions.es_bienap.database.TABLE_DEVICE;
+import vn.com.esolutions.es_bienap.database.TABLE_ELEMENT_REPORT;
+import vn.com.esolutions.es_bienap.database.TABLE_QUESTION_REPORT;
+import vn.com.esolutions.es_bienap.database.TABLE_REPORT;
 
 public class LoginActivity extends BaseActivity {
     private Unbinder unbinder;
@@ -32,7 +44,7 @@ public class LoginActivity extends BaseActivity {
             setAction(savedInstanceState);
         } catch (Exception e) {
             e.printStackTrace();
-            super.showSnackBar("Gặp vấn đề" , e.getMessage(), null);
+            super.showSnackBar("Gặp vấn đề", e.getMessage(), null);
         }
     }
 
@@ -46,18 +58,26 @@ public class LoginActivity extends BaseActivity {
     @Override
     public void initDataAndView(View rootView) throws Exception {
         super.setupFullScreen();
-
+        super.setCoordinatorLayout((CoordinatorLayout) findViewById(R.id.cc_login));
         unbinder = ButterKnife.bind(this, rootView);
     }
 
     @Override
     public void setAction(Bundle savedInstanceState) throws Exception {
+        //create database
+        SqlHelper.setupDB(this,
+                DATABASE_CONFIG.class,
+                new Class[]{TABLE_ANSWER_REPORT.class,
+                        TABLE_DEVICE.class,
+                        TABLE_ELEMENT_REPORT.class,
+                        TABLE_QUESTION_REPORT.class,
+                        TABLE_REPORT.class
+                });
     }
     //endregion
 
     @OnClick(R.id.btn_login_admin)
-    public void clickLoginAdmin(View view)
-    {
+    public void clickLoginAdmin(View view) {
         startActionMode(Common.MODE.ADMIN);
 
         //start anim
@@ -69,8 +89,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     @OnClick(R.id.btn_login_emp)
-    public void clickLoginEmp(View view)
-    {
+    public void clickLoginEmp(View view) {
         startActionMode(Common.MODE.EMP);
 
         //start anim
@@ -82,7 +101,6 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-
     private void startActionMode(Common.MODE mode) {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         Bundle bundle = new Bundle();
@@ -90,7 +108,7 @@ public class LoginActivity extends BaseActivity {
         intent.putExtras(bundle);
         startActivity(intent);
 
-        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
+//        overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left);
 
     }
 }
