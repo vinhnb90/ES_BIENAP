@@ -9,6 +9,7 @@ import java.util.List;
 import esolutions.com.esdatabaselib.baseSqlite.ItemFactory;
 import esolutions.com.esdatabaselib.baseSqlite.SqlDAO;
 import vn.com.esolutions.es_bienap.database.TABLE_DEVICE;
+import vn.com.esolutions.es_bienap.database.TABLE_REPORT;
 
 /**
  * Created by VinhNB on 11/22/2017.
@@ -45,6 +46,24 @@ public class DAO extends SqlDAO {
     }
 
 
+    public List<TABLE_REPORT> getTABLE_REPORT(String[] agrs) {
+
+        String query = "SELECT * FROM " +
+                TABLE_REPORT.table.getName() +
+                " WHERE " +
+                TABLE_REPORT.table.REPORT_NAME.name() +
+                " = ? " +
+                " AND " +
+                TABLE_REPORT.table.MODE.name() +
+                " = ? ";
+
+
+        Cursor cursor = super.mDatabase.rawQuery(query, agrs);
+
+        return super.selectAllLazy(TABLE_REPORT.class, cursor);
+    }
+
+
     public List<DeviceAdapter.DataDevice> getDeviceAdapter(Common.MODE mode) {
 
         String query = "SELECT * FROM " +
@@ -71,8 +90,41 @@ public class DAO extends SqlDAO {
                 dataDevice.setDEVICE_NAME(cursor.getString(cursor.getColumnIndex(TABLE_DEVICE.table.DEVICE_NAME.name())));
                 dataDevice.setDEVICE_STATUS(cursor.getString(cursor.getColumnIndex(TABLE_DEVICE.table.DEVICE_STATUS.name())));
                 dataDevice.setDEVICE_ADDRESS(cursor.getString(cursor.getColumnIndex(TABLE_DEVICE.table.DEVICE_ADDRESS.name())));
+                dataDevice.setChoose(false);
 
                 return dataDevice;
+            }
+        });
+    }
+
+
+    public List<ReportAdapter.DataReport> getReportAdapter(Common.MODE mode) {
+
+        String query = "SELECT * FROM " +
+                TABLE_REPORT.table.getName() +
+                " WHERE " +
+                TABLE_REPORT.table.MODE.name() +
+                " = '" +
+                mode.content +
+                "' ORDER BY " +
+                TABLE_REPORT.table.REPORT_DATE.name() +
+                " DESC";
+
+
+        Cursor cursor = super.mDatabase.rawQuery(query, null);
+
+        return super.selectCustomLazy(cursor, new ItemFactory(ReportAdapter.DataReport.class) {
+            @Override
+            protected ReportAdapter.DataReport create(Cursor cursor, int index) {
+                ReportAdapter.DataReport dataReport = new ReportAdapter.DataReport();
+                cursor.moveToPosition(index);
+
+                dataReport.setREPORT_DATE(cursor.getString(cursor.getColumnIndex(TABLE_REPORT.table.REPORT_DATE.name())));
+                dataReport.setREPORT_NAME(cursor.getString(cursor.getColumnIndex(TABLE_REPORT.table.REPORT_NAME.name())));
+                dataReport.setREPORT_STATUS(cursor.getString(cursor.getColumnIndex(TABLE_REPORT.table.REPORT_STATUS.name())));
+                dataReport.setChoose(false);
+
+                return dataReport;
             }
         });
     }

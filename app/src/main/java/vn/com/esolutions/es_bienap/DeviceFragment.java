@@ -37,7 +37,6 @@ import vn.com.esolutions.es_bienap.database.TABLE_DEVICE;
 
 import static vn.com.esolutions.es_bienap.Common.BUNDLE_MODE;
 import static vn.com.esolutions.es_bienap.Common.TIME_DELAY_CLICK_LONG;
-import static vn.com.esolutions.es_bienap.Common.TIME_DELAY_CLICK_SHORT;
 
 
 public class DeviceFragment extends Fragment implements IBaseView {
@@ -73,7 +72,7 @@ public class DeviceFragment extends Fragment implements IBaseView {
     @BindView(R.id.btn_search)
     Button btnSearchDevice;
 
-    @BindView(R.id.btn_search_server)
+    @BindView(R.id.btn_search_server_device)
     Button btnSearchDeviceServer;
 
     @BindView(R.id.et_search)
@@ -132,84 +131,13 @@ public class DeviceFragment extends Fragment implements IBaseView {
 
         showHideView(R.id.btn_upload);
 
-        ((Activity) this.getContext()).getWindow().getDecorView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                tvTotalDevice.setText(((DeviceAdapter) rvListDevice.getAdapter()).getListDevice().size() + "");
-                tvTotalDeviceChoose.setText(((DeviceAdapter) rvListDevice.getAdapter()).getListDeviceChoose().size() + "");
+        tvTotalDevice.setText(((DeviceAdapter) rvListDevice.getAdapter()).getListDevice().size() + "");
+        tvTotalDeviceChoose.setText(((DeviceAdapter) rvListDevice.getAdapter()).getListDeviceChoose().size() + "");
 
-                //init view
-                tvCountPercent.setText("0%");
-                pbarUpload.setProgress(0);
+        //init view
+        tvCountPercent.setText("0%");
+        pbarUpload.setProgress(0);
 
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final List<DeviceAdapter.DataDevice> listDeviceChoose = ((DeviceAdapter) rvListDevice.getAdapter()).getListDeviceChoose();
-                        final int count = listDeviceChoose.size();
-
-                        for (int i = 0; i < count; i++) {
-                            final int iI = i;
-                            pbarUpload.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        pbarUpload.setProgress(iI * 100 / count);
-                                        tvCountPercent.setText((iI * 100 / count) + "%");
-
-                                        //data
-                                        //update
-                                        //get data if has
-                                        String DEVICE_CODE = listDeviceChoose.get(iI).getDEVICE_CODE();
-                                        List<TABLE_DEVICE> tableDevices = database.getTABLE_DEVICE(new String[]{
-                                                DEVICE_CODE,
-                                                mMode.content
-                                        });
-
-                                        TABLE_DEVICE tableDeviceOld = new TABLE_DEVICE();
-                                        if (tableDevices.size() != 0) {
-                                            tableDeviceOld = tableDevices.get(0);
-                                            ((LazyList<TABLE_DEVICE>) tableDevices).closeCursor();
-                                        }
-
-                                        //save
-                                        TABLE_DEVICE tableDeviceNew = (TABLE_DEVICE) tableDeviceOld.clone();
-                                        tableDeviceNew.setDEVICE_STATUS(Common.STATUS.PUBLISH.content);
-                                        tableDeviceNew.setID_TABLE_DEVICE((int) database.updateORInsertRows(TABLE_DEVICE.class, tableDeviceOld, tableDeviceNew));
-
-
-                                        if (tableDeviceNew.getID_TABLE_DEVICE() != 0) {
-                                            //refresh data
-                                        } else {
-                                            throw new Exception("Cập nhật thất bại thiết bị DEVICE_CODE = " + tableDeviceNew.getDEVICE_CODE());
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        hasError.concat("\nGặp vấn đề khi phát hành thiết bị\nNội dung lỗi: " + e.getMessage());
-                                    }
-
-                                }
-                            }, Common.TIME_DELAY_CLICK_MORE_SHORT);
-                        }
-
-
-                        //wwhen finish
-                        pbarUpload.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                pbarUpload.setProgress(100);
-                                tvCountPercent.setText(100 + "%");
-                                if (!TextUtils.isEmpty(hasError)) {
-                                    tvCountPercent.setText("Có xảy ra lỗi khi phát hành thiết bị!");
-                                }
-                            }
-                        });
-
-                    }
-                }).start();
-
-            }
-        }, Common.TIME_DELAY_CLICK_SHORT);
     }
 
 
@@ -231,7 +159,7 @@ public class DeviceFragment extends Fragment implements IBaseView {
                         @Override
                         public void clickUpload(final int adapterPosition) {
                             //fake ok set up
-                            showDialog("Đang tiến hành phát hành thiết bị!", new IOnDismisDialog() {
+                            showDialog("Đang tiến hành phát hành thiết bị!", new IOnLoaddingDialog() {
                                         @Override
                                         public void onDismiss() {
                                             try {
@@ -258,10 +186,13 @@ public class DeviceFragment extends Fragment implements IBaseView {
 
                                                 if (tableDeviceNew.getID_TABLE_DEVICE() != 0) {
                                                     //refresh data
-                                                    DeviceAdapter.DataDevice oldData = (DeviceAdapter.DataDevice) ((DeviceAdapter) rvListDevice.getAdapter()).getListDevice().get(adapterPosition).clone();
+//                                                    DeviceAdapter.DataReport oldData = (DeviceAdapter.DataReport) ((DeviceAdapter) rvListDevice.getAdapter()).getListReport().get(adapterPosition).clone();
+//                                                    ((DeviceAdapter) rvListDevice.getAdapter()).getListReport().get(adapterPosition)
+//                                                    DeviceAdapter.DataReport newData = (DeviceAdapter.DataReport) ((DeviceAdapter) rvListDevice.getAdapter()).getListReport().get(adapterPosition).clone();
+//                                                    ((DeviceAdapter) rvListDevice.getAdapter()).changeData(oldData, newData, true);
+//                                                    ((DeviceAdapter) rvListDevice.getAdapter()).notifyDataSetChanged();
+
                                                     ((DeviceAdapter) rvListDevice.getAdapter()).getListDevice().get(adapterPosition).setDEVICE_STATUS(Common.STATUS.PUBLISH.content);
-                                                    DeviceAdapter.DataDevice newData = (DeviceAdapter.DataDevice) ((DeviceAdapter) rvListDevice.getAdapter()).getListDevice().get(adapterPosition).clone();
-                                                    ((DeviceAdapter) rvListDevice.getAdapter()).changeData(oldData, newData, true);
                                                     ((DeviceAdapter) rvListDevice.getAdapter()).notifyDataSetChanged();
                                                     rvListDevice.invalidate();
 
@@ -314,7 +245,7 @@ public class DeviceFragment extends Fragment implements IBaseView {
                     rvListDevice.setAdapter(adapter);
                     rvListDevice.invalidate();
                 } else {
-                    ((DeviceAdapter) rvListDevice.getAdapter()).refresh(tableDevices, null, mMode);
+                    ((DeviceAdapter) rvListDevice.getAdapter()).refresh(tableDevices, mMode);
                     rvListDevice.invalidate();
                 }
 
@@ -398,6 +329,8 @@ public class DeviceFragment extends Fragment implements IBaseView {
         }, Common.TIME_DELAY_CLICK_SHORT);
     }
 
+    //endregion
+
     private void searchOnline(final String deviceCode, String content) {
         //fake result from server
         Common.MODE mode = Common.MODE.findMODEbyContent(content);
@@ -405,7 +338,7 @@ public class DeviceFragment extends Fragment implements IBaseView {
             case ADMIN:
                 //if has, fake ko có case này
                 //if no.
-                showDialog("Đang kiểm tra trên máy chủ!", new IOnDismisDialog() {
+                showDialog("Đang kiểm tra trên máy chủ!", new IOnLoaddingDialog() {
                     @Override
                     public void onDismiss() {
                         tvDeviceCode.setText(deviceCode);
@@ -419,7 +352,7 @@ public class DeviceFragment extends Fragment implements IBaseView {
         }
     }
 
-    private void showDialog(String message, final IOnDismisDialog iteractorDialog) {
+    private void showDialog(String message, final IOnLoaddingDialog iteractorDialog) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_process);
@@ -450,7 +383,6 @@ public class DeviceFragment extends Fragment implements IBaseView {
         }, TIME_DELAY_CLICK_LONG);
 
     }
-    //endregion
 
     //region click view add new device
     @OnClick(R.id.btn_save_thietbi)
@@ -532,7 +464,101 @@ public class DeviceFragment extends Fragment implements IBaseView {
                     }
 
 
-                    //get data if has
+                    ((Activity) DeviceFragment.this.getContext()).getWindow().getDecorView().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            tvTotalDevice.setText(((DeviceAdapter) rvListDevice.getAdapter()).getListDevice().size() + "");
+                            tvTotalDeviceChoose.setText(((DeviceAdapter) rvListDevice.getAdapter()).getListDeviceChoose().size() + "");
+
+                            //init view
+                            tvCountPercent.setText("0%");
+                            pbarUpload.setProgress(0);
+
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    final List<DeviceAdapter.DataDevice> listDeviceChoose = ((DeviceAdapter) rvListDevice.getAdapter()).getListDeviceChoose();
+                                    final int count = listDeviceChoose.size();
+
+                                    for (int i = 0; i < count; i++) {
+                                        final int iI = i;
+                                        pbarUpload.postDelayed(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                try {
+                                                    pbarUpload.setProgress((iI + 1) * 100 / count);
+                                                    tvCountPercent.setText(((iI + 1) * 100 / count) + "%");
+
+                                                    //data
+                                                    //update
+                                                    //get data if has
+                                                    String DEVICE_CODE = listDeviceChoose.get(iI).getDEVICE_CODE();
+                                                    List<TABLE_DEVICE> tableDevices = database.getTABLE_DEVICE(new String[]{
+                                                            DEVICE_CODE,
+                                                            mMode.content
+                                                    });
+
+                                                    TABLE_DEVICE tableDeviceOld = new TABLE_DEVICE();
+                                                    if (tableDevices.size() != 0) {
+                                                        tableDeviceOld = tableDevices.get(0);
+                                                        ((LazyList<TABLE_DEVICE>) tableDevices).closeCursor();
+                                                    }
+
+                                                    //save
+                                                    TABLE_DEVICE tableDeviceNew = (TABLE_DEVICE) tableDeviceOld.clone();
+                                                    tableDeviceNew.setDEVICE_STATUS(Common.STATUS.PUBLISH.content);
+                                                    tableDeviceNew.setID_TABLE_DEVICE((int) database.updateORInsertRows(TABLE_DEVICE.class, tableDeviceOld, tableDeviceNew));
+
+
+                                                    if (tableDeviceNew.getID_TABLE_DEVICE() != 0) {
+                                                        //update data
+
+                                                        getActivity().getWindow().getDecorView().post(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                List<DeviceAdapter.DataDevice> tableAdapterDevices = database.getDeviceAdapter(mMode);
+                                                                if (rvListDevice.getAdapter() == null) {
+                                                                    DeviceAdapter adapter = new DeviceAdapter(getContext(), tableAdapterDevices, mMode, mIteractor);
+                                                                    rvListDevice.setAdapter(adapter);
+                                                                    rvListDevice.invalidate();
+                                                                } else {
+                                                                    ((DeviceAdapter) rvListDevice.getAdapter()).refresh(tableAdapterDevices, mMode);
+                                                                    rvListDevice.invalidate();
+                                                                }
+                                                            }
+                                                        });
+
+                                                    } else {
+                                                        throw new Exception("Cập nhật thất bại thiết bị DEVICE_CODE = " + tableDeviceNew.getDEVICE_CODE());
+                                                    }
+                                                } catch (Exception e) {
+                                                    e.printStackTrace();
+                                                    hasError.concat("\nGặp vấn đề khi phát hành thiết bị\nNội dung lỗi: " + e.getMessage());
+                                                }
+
+                                            }
+                                        }, Common.TIME_DELAY_CLICK_MORE_SHORT);
+                                    }
+
+
+                                    //wwhen finish
+                                    pbarUpload.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            pbarUpload.setProgress(100);
+                                            tvCountPercent.setText(100 + "%");
+                                            if (!TextUtils.isEmpty(hasError)) {
+                                                tvCountPercent.setText("Có xảy ra lỗi khi phát hành thiết bị!");
+                                            }
+                                        }
+                                    });
+
+                                }
+                            }).start();
+
+                        }
+                    }, Common.TIME_DELAY_CLICK_SHORT);
+                   /* //get data if has
                     List<TABLE_DEVICE> tableDevices = database.getTABLE_DEVICE(new String[]{
                             tvDeviceCode.getText().toString(),
                             mMode.content
@@ -547,11 +573,11 @@ public class DeviceFragment extends Fragment implements IBaseView {
 
                     //save
                     TABLE_DEVICE tableDeviceNew = new TABLE_DEVICE();
-                    tableDeviceNew.setDEVICE_NAME(etDeviceName.getText().toString());
+                    tableDeviceNew.setREPORT_NAME(etDeviceName.getText().toString());
                     tableDeviceNew.setDEVICE_CODE(tvDeviceCode.getText().toString());
                     tableDeviceNew.setDEVICE_ADDRESS(etAddDevice.getText().toString());
-                    tableDeviceNew.setDEVICE_DATE(Common.getDateTimeNow(Common.DATE_TIME_TYPE.sqlite2));
-                    tableDeviceNew.setDEVICE_STATUS(Common.STATUS.EDIT.content);
+                    tableDeviceNew.setREPORT_DATE(Common.getDateTimeNow(Common.DATE_TIME_TYPE.sqlite2));
+                    tableDeviceNew.setREPORT_STATUS(Common.STATUS.EDIT.content);
                     tableDeviceNew.setMODE(Common.MODE.ADMIN.content);
 
 
@@ -560,8 +586,8 @@ public class DeviceFragment extends Fragment implements IBaseView {
                     if (tableDeviceNew.getID_TABLE_DEVICE() != 0) {
                         tvDeviceCode.setText(tableDeviceNew.getDEVICE_CODE());
 
-                        etDeviceName.setHint(tableDeviceNew.getDEVICE_NAME());
-                        etDeviceName.setText(tableDeviceNew.getDEVICE_NAME());
+                        etDeviceName.setHint(tableDeviceNew.getREPORT_NAME());
+                        etDeviceName.setText(tableDeviceNew.getREPORT_NAME());
 
                         etAddDevice.setHint(tableDeviceNew.getDEVICE_ADDRESS());
                         etAddDevice.setText(tableDeviceNew.getDEVICE_ADDRESS());
@@ -569,7 +595,7 @@ public class DeviceFragment extends Fragment implements IBaseView {
                         mListener.showMessage("Thêm mới thiết bị thành công!", null, null);
                     } else {
                         throw new Exception("Gặp lỗi khi thêm mới thiết bị\nNội dung lỗi : Lưu dữ liệu không thành công!");
-                    }
+                    }*/
                 } catch (Exception e) {
                     e.printStackTrace();
                     mListener.showMessage(e.getMessage(), null, null);
@@ -608,7 +634,6 @@ public class DeviceFragment extends Fragment implements IBaseView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         // Inflate the layout for this fragment
         View rootView = null;
         try {
@@ -688,9 +713,14 @@ public class DeviceFragment extends Fragment implements IBaseView {
         void showMessage(String message, @Nullable String content, @Nullable final ISnackbarIteractions actionOK);
     }
 
-    public interface IOnDismisDialog {
+    public interface IOnLoaddingDialog {
 
         void onDismiss();
+    }
+
+    public interface IOnInputFieldDialog {
+
+        void onDismiss(String result);
     }
 
 }

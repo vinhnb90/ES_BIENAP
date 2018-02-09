@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/ll_report_answer"
+    android:layout_height="wrap_content"
+    xmlns:tool="http://schemas.android.com/tools"
+    tool:background="@color/colorBackgroundHome"
+    android:layout_marginBottom="@dimen/_10sdp"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/ll_2"
+        tool:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_title_question"
+            style="@style/tvStyle3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Câu hỏi 1" />
+
+        <TextView
+            style="@style/tvStyle2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="ahdh1456465464" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_title_question_answer"
+        style="@style/tvStyle3"
+        tool:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Yêu cầu khảo sát câu hỏi 1"
+        android:visibility="gone" />
+
+
+    <include layout="@layout/report_module_answer_text"></include>
+
+    <include layout="@layout/report_module_answer_unit"></include>
+
+    <include layout="@layout/report_module_answer_choose"></include>
+
+    <include layout="@layout/report_module_answer_image"></include>
+
+</LinearLayout>

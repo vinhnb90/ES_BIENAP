@@ -28,7 +28,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceAdap
     private static Drawable ic_done_task, ic_edit_note_menu, ic_recybin;
     private Common.MODE mode;
     private static List<DataDevice> listDevice = new ArrayList<>();
-    private static HashMap<DataDevice, Boolean> mapDeviceChoose = new HashMap<>();
+//    private static HashMap<String, Boolean> mapDeviceChoose = new HashMap<>();
 
     private static IOnDeviceAdapter mIteractor;
 
@@ -46,10 +46,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceAdap
 //
 //        if (ic_recybin == null)
 //            ic_recybin = ContextCompat.getDrawable(context, R.drawable.ic_recybin);
-        for (DataDevice device : listDevice
-                ) {
-            mapDeviceChoose.put(device, false);
-        }
     }
 
     @Override
@@ -68,12 +64,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceAdap
         Common.STATUS status = Common.STATUS.findSTATUS(data.getDEVICE_STATUS());
         holder.tvStatus.setText(status.content);
 
-        boolean isChecked = false;
-        if (mapDeviceChoose.containsKey(data)) {
-            isChecked = mapDeviceChoose.get(data);
-        } else {
-            mapDeviceChoose.put(data, isChecked);
-        }
+        boolean isChecked = data.isChoose;
 
         if (mode == Common.MODE.ADMIN) {
             holder.rbChoose.setChecked(isChecked);
@@ -116,20 +107,10 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceAdap
         return this.listDevice.size();
     }
 
-    public void refresh(List<DataDevice> listDevice, @Nullable HashMap<DataDevice, Boolean> mapDeviceChoose, Common.MODE mMode) {
+    public void refresh(List<DataDevice> listDevice, Common.MODE mMode) {
         this.listDevice.clear();
         this.listDevice = Common.cloneList(listDevice);
         this.mode = mMode;
-
-        if (mapDeviceChoose != null && mapDeviceChoose.size() == listDevice.size()) {
-            this.mapDeviceChoose.clear();
-            this.mapDeviceChoose = mapDeviceChoose;
-        } else {
-            for (DataDevice device : listDevice
-                    ) {
-                this.mapDeviceChoose.put(device, false);
-            }
-        }
 
         notifyDataSetChanged();
     }
@@ -160,7 +141,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceAdap
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (rbChoose.isPressed()) {
                         int pos = getAdapterPosition();
-                        mapDeviceChoose.put(listDevice.get(pos), rbChoose.isChecked());
+                        listDevice.get(pos).setChoose(rbChoose.isChecked());
                     }
                 }
             });
@@ -183,19 +164,19 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceAdap
 
     public List<DataDevice> getListDeviceChoose() {
         List<DataDevice> listDeviceChoose = new ArrayList<>();
-        for (Map.Entry<DataDevice, Boolean> a : mapDeviceChoose.entrySet()) {
-            if (a.getValue()) {
-                listDeviceChoose.add(a.getKey());
+        for (DataDevice a : listDevice) {
+            if (a.isChoose) {
+                listDeviceChoose.add(a);
             }
         }
 
         return listDeviceChoose;
     }
 
-    public void changeData(DataDevice oldKey, DataDevice newKey, Boolean value) {
-//        hashMap.put("New_Key", hashMap.remove("Old_Key"));
-        mapDeviceChoose.put(newKey, mapDeviceChoose.remove(oldKey));
-    }
+//    public void changeData(DataReport oldKey, DataReport newKey, Boolean value) {
+////        hashMap.put("New_Key", hashMap.remove("Old_Key"));
+//        mapDeviceChoose.put(newKey, mapDeviceChoose.remove(oldKey));
+//    }
 
     public List<DataDevice> getListDevice() {
         return listDevice;
@@ -215,6 +196,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceAdap
         private String DEVICE_DATE;
         private String DEVICE_STATUS;
         private String DEVICE_ADDRESS;
+
+        private boolean isChoose;
 
         public String getDEVICE_CODE() {
             return DEVICE_CODE;
@@ -254,6 +237,15 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.DeviceAdap
 
         public void setDEVICE_ADDRESS(String DEVICE_ADDRESS) {
             this.DEVICE_ADDRESS = DEVICE_ADDRESS;
+        }
+
+        public boolean isChoose() {
+            return isChoose;
+        }
+
+        public DataDevice setChoose(boolean choose) {
+            isChoose = choose;
+            return this;
         }
 
         @Override
