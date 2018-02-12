@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:text="Câu hỏi 1" />
 
-        <TextView
+        <EditText
+            android:id="@+id/et_question_name"
             style="@style/tvStyle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,6 +35,7 @@
     </LinearLayout>
 
     <TextView
+        android:layout_marginBottom="@dimen/_10sdp"
         android:id="@+id/tv_title_question_answer"
         style="@style/tvStyle3"
         tool:visibility="visible"
@@ -42,13 +44,18 @@
         android:text="Yêu cầu khảo sát câu hỏi 1"
         android:visibility="gone" />
 
+    <LinearLayout
+        android:id="@+id/ll_module_answer_include"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include android:visibility="gone" layout="@layout/report_module_answer_text"></include>
 
-    <include layout="@layout/report_module_answer_text"></include>
+        <include android:visibility="gone" layout="@layout/report_module_answer_unit"></include>
 
-    <include layout="@layout/report_module_answer_unit"></include>
+        <include android:visibility="gone" layout="@layout/report_module_answer_choose"></include>
 
-    <include layout="@layout/report_module_answer_choose"></include>
-
-    <include layout="@layout/report_module_answer_image"></include>
+        <include android:visibility="gone" layout="@layout/report_module_answer_image"></include>
+    </LinearLayout>
 
 </LinearLayout>

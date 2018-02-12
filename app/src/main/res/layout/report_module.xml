@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
-    android:id="@+id/ll_module"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/xml_retangle"
@@ -62,11 +61,19 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="@dimen/_1sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
         android:background="@color/colorItem" />
 
+    <LinearLayout
+        android:id="@+id/ll_module"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <include android:visibility="gone" layout="@layout/report_module_answer"></include>
 
-    <include layout="@layout/report_module_answer"></include>
+        <include android:visibility="gone" layout="@layout/report_module_answer"></include>
+    </LinearLayout>
 
-    <include layout="@layout/report_module_answer"></include>
+
 
 </LinearLayout>

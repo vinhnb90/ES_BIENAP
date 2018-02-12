@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReportModule extends AbModuleReport {
@@ -15,7 +16,7 @@ public class ReportModule extends AbModuleReport {
     private EditText etNameModule;
     private View rowView;
 
-    List<LinearLayout> viewList;
+    List<LinearLayout> viewList = new ArrayList<>();
 
     public ReportModule(Context context) {
         super(context);
@@ -36,10 +37,10 @@ public class ReportModule extends AbModuleReport {
 
     }
 
-    public ReportModule setViewList(List<LinearLayout> viewList) {
-        this.viewList = viewList;
-        this.addView(rowView);
-        super.invalidateView(rowView);
+    public ReportModule addView(LinearLayout view) {
+        this.viewList.add(view);
+        this.llReportModule.addView(view);
+        this.rowView.invalidate();
         return this;
     }
 }

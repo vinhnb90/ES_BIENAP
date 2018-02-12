@@ -3,19 +3,18 @@ package vn.com.esolutions.es_bienap;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class Report extends AbModuleReport {
+public class ReportView extends AbModuleReport {
     private LinearLayout llReport;
     private View rowView;
 
-    List<LinearLayout> viewList;
+    List<LinearLayout> viewList = new ArrayList<>();
 
-    public Report(Context context) {
+    public ReportView(Context context) {
         super(context);
 
         rowView = LayoutInflater.from(context).inflate(R.layout.report, null);
@@ -30,7 +29,7 @@ public class Report extends AbModuleReport {
         super.invalidateView(rowView);
     }
 
-    public Report setViewList(List<LinearLayout> viewList) {
+    public ReportView setViewList(List<LinearLayout> viewList) {
         this.viewList = viewList;
         this.addView(rowView);
         super.invalidateView(rowView);

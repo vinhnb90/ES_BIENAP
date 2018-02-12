@@ -36,9 +36,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import esolutions.com.esdatabaselib.baseSqlite.LazyList;
+import esolutions.com.esdatabaselib.baseSqlite.SqlHelper;
 import vn.com.esolutions.es_bienap.database.TABLE_REPORT;
 
+import static vn.com.esolutions.es_bienap.Common.BUNDLE_MODE;
 import static vn.com.esolutions.es_bienap.Common.TIME_DELAY_CLICK_LONG;
+import static vn.com.esolutions.es_bienap.Common.TIME_DELAY_CLICK_SHORT;
 
 public class ReportFragment extends Fragment implements IBaseView {
 
@@ -49,7 +52,7 @@ public class ReportFragment extends Fragment implements IBaseView {
 
     /*View add*/
     @BindView(R.id.rl_add_report)
-    RelativeLayout rlAddDevice;
+    RelativeLayout rlAddReport;
 
     @BindView(R.id.btn_add_report)
     Button btnAddDevice;
@@ -75,12 +78,18 @@ public class ReportFragment extends Fragment implements IBaseView {
     @BindView(R.id.ibtn_create_unit)
     ImageButton ibtnCreateUnit;
 
+    @BindView(R.id.btn_save_report)
+    Button btnSaveReport;
+
 
     @BindView(R.id.tv_report_name)
     EditText etReportname;
 
-    @BindView(R.id.ll_module_include)
+    @BindView(R.id.ll_report)
     LinearLayout llReportModule;
+
+    @BindView(R.id.ll_module_include)
+    LinearLayout llReport;
 
 
 //    @BindView(R.id.et_nhap_ten_thietbi)
@@ -95,7 +104,7 @@ public class ReportFragment extends Fragment implements IBaseView {
 
     /*View search*/
     @BindView(R.id.rv_search_report)
-    RelativeLayout rlSearchDevice;
+    RelativeLayout rlSearchReport;
 
 
     @BindView(R.id.btn_search_report)
@@ -110,7 +119,7 @@ public class ReportFragment extends Fragment implements IBaseView {
     @BindView(R.id.ibtn_clear_search_report)
     ImageButton ibtnClearSearch;
 
-    @BindView(R.id.rv_search_report)
+    @BindView(R.id.rv_list_report)
     RecyclerView rvListReport;
 
 
@@ -141,7 +150,17 @@ public class ReportFragment extends Fragment implements IBaseView {
     private Common.MODE mMode;
     private ReportAdapter.IOnReportAdapter mIteractor;
     private String hasError;
+    private List<ReportModule> reportViewList = new ArrayList<>();
 
+    public static ReportFragment newInstance(
+//            String param1, String param2
+            Common.MODE mode) {
+        ReportFragment fragment = new ReportFragment();
+        Bundle args = new Bundle();
+        args.putSerializable(BUNDLE_MODE, mode);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     //region click button menu top
     @OnClick(R.id.btn_upload_report)
@@ -343,16 +362,16 @@ public class ReportFragment extends Fragment implements IBaseView {
         });
         dialog.show();
 
-        dialog.getWindow().getDecorView().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                dialog.dismiss();
-            }
-        }, TIME_DELAY_CLICK_LONG);
+//        dialog.getWindow().getDecorView().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                dialog.dismiss();
+//            }
+//        }, TIME_DELAY_CLICK_LONG);
 
     }
 
-    @OnClick(R.id.btn_add)
+    @OnClick(R.id.btn_add_report)
     public void clickBtnAdd(View view) {
         //show dialog input name
         showDialogInputText("Nhập tên phiếu", new DeviceFragment.IOnInputFieldDialog() {
@@ -362,6 +381,10 @@ public class ReportFragment extends Fragment implements IBaseView {
                     clickBtnSearch(btnSearchReport);
                     return;
                 }
+
+                showHideView(R.id.btn_add);
+
+                showEnableToolsButton(CLICK_TOOLS.CLICK_ADD);
 
                 createReport(result);
             }
@@ -446,29 +469,156 @@ public class ReportFragment extends Fragment implements IBaseView {
         etReportname.setText(result);
         etReportname.setHint(result);
 
-
+        //serup view
+        llReportModule.addView(new ReportView(getContext()));
+        llReportModule.invalidate();
     }
 
     //endregion
 
 
+    //region click button region add
+    @OnClick(R.id.ibtn_create_module)
+    public void clickIBtnCreateModule(View view) {
+        Common.runAnimationClickView(view, R.anim.twinking_view, TIME_DELAY_CLICK_SHORT);
+        showEnableToolsButton(CLICK_TOOLS.CLICK_MODULE);
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                reportViewList.add(new ReportModule(getContext()));
+                llReportModule.addView(reportViewList.get(reportViewList.size() - 1));
+                llReportModule.invalidate();
+            }
+        }, TIME_DELAY_CLICK_SHORT);
+    }
+
+    @OnClick(R.id.ibtn_create_question)
+    public void clickIBtnCreateQuestion(View view) {
+        Common.runAnimationClickView(view, R.anim.twinking_view, TIME_DELAY_CLICK_SHORT);
+        showEnableToolsButton(CLICK_TOOLS.CLICK_QUESTION);
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                reportViewList.get(reportViewList.size() - 1).addView(new ReportAnswer(getContext()));
+                reportViewList.get(reportViewList.size() - 1).invalidate();
+//                reportModule.getLlReportModule().addView(reportModule.getViewList().get(reportModule.getViewList().size() - 1));
+//                llReportModule.invalidate();
+            }
+        }, TIME_DELAY_CLICK_SHORT);
+    }
+
+    @OnClick(R.id.ibtn_create_checkbox)
+    public void clickIBtnCreateCheckBox(View view) {
+        Common.runAnimationClickView(view, R.anim.twinking_view, TIME_DELAY_CLICK_SHORT);
+        showEnableToolsButton(CLICK_TOOLS.CLICK_QUESTION);
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ReportModule reportModule = reportViewList.get(reportViewList.size() - 1);
+                ReportAnswer reportAnswer = (ReportAnswer) reportModule.viewList.get(reportModule.viewList.size() - 1);
+                reportAnswer.addView(new ReportAnswerChoose(getContext()));
+                llReport.invalidate();
+            }
+        }, TIME_DELAY_CLICK_SHORT);
+    }
+
+    @OnClick(R.id.ibtn_create_image)
+    public void clickIBtnCreateImage(View view) {
+        Common.runAnimationClickView(view, R.anim.twinking_view, TIME_DELAY_CLICK_SHORT);
+        showEnableToolsButton(CLICK_TOOLS.CLICK_QUESTION);
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ReportModule reportModule = reportViewList.get(reportViewList.size() - 1);
+                ReportAnswer reportAnswer = (ReportAnswer) reportModule.viewList.get(reportModule.viewList.size() - 1);
+                reportAnswer.addView(new ReportAnswerImage(getContext()));
+                llReport.invalidate();
+            }
+        }, TIME_DELAY_CLICK_SHORT);
+    }
+
+    @OnClick(R.id.ibtn_create_text)
+    public void clickIBtnCreateText(View view) {
+        Common.runAnimationClickView(view, R.anim.twinking_view, TIME_DELAY_CLICK_SHORT);
+        showEnableToolsButton(CLICK_TOOLS.CLICK_QUESTION);
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ReportModule reportModule = reportViewList.get(reportViewList.size() - 1);
+                ReportAnswer reportAnswer = (ReportAnswer) reportModule.viewList.get(reportModule.viewList.size() - 1);
+                reportAnswer.addView(new ReportAnswerText(getContext()));
+                llReport.invalidate();
+            }
+        }, TIME_DELAY_CLICK_SHORT);
+    }
+
+    @OnClick(R.id.ibtn_create_text)
+    public void clickIBtnCreateUnit(View view) {
+        Common.runAnimationClickView(view, R.anim.twinking_view, TIME_DELAY_CLICK_SHORT);
+        showEnableToolsButton(CLICK_TOOLS.CLICK_QUESTION);
+        view.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ReportModule reportModule = reportViewList.get(reportViewList.size() - 1);
+                ReportAnswer reportAnswer = (ReportAnswer) reportModule.viewList.get(reportModule.viewList.size() - 1);
+                reportAnswer.addView(new ReportAnswerUnit(getContext()));
+                llReport.invalidate();
+            }
+        }, TIME_DELAY_CLICK_SHORT);
+    }
+
+    //endregion
+
     public void showHideView(int idButton) {
-        rlAddDevice.setVisibility(View.GONE);
-        rlSearchDevice.setVisibility(View.GONE);
+        rlAddReport.setVisibility(View.GONE);
+        rlSearchReport.setVisibility(View.GONE);
         rlUploadReport.setVisibility(View.GONE);
         rlTool.setVisibility(View.GONE);
         switch (idButton) {
             case R.id.btn_add:
                 rlTool.setVisibility(View.VISIBLE);
-                rlAddDevice.setVisibility(View.VISIBLE);
+                rlAddReport.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.btn_search:
-                rlSearchDevice.setVisibility(View.VISIBLE);
+                rlSearchReport.setVisibility(View.VISIBLE);
                 break;
 
             case R.id.btn_upload_report:
                 rlUploadReport.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
+    public void showEnableToolsButton(CLICK_TOOLS clickAdd) {
+        ibtnCreateModule.setEnabled(false);
+        ibtnCreateQuestion.setEnabled(false);
+        ibtnCreateCheckbox.setEnabled(false);
+        ibtnCreateText.setEnabled(false);
+        ibtnCreateImage.setEnabled(false);
+        ibtnCreateUnit.setEnabled(false);
+        btnSaveReport.setEnabled(false);
+        switch (clickAdd) {
+            case CLICK_ADD:
+                ibtnCreateModule.setEnabled(true);
+                btnSaveReport.setEnabled(true);
+                break;
+            case CLICK_MODULE:
+                ibtnCreateQuestion.setEnabled(true);
+                btnSaveReport.setEnabled(true);
+                break;
+            case CLICK_QUESTION:
+                ibtnCreateModule.setEnabled(true);
+                ibtnCreateQuestion.setEnabled(true);
+                ibtnCreateCheckbox.setEnabled(false);
+                ibtnCreateText.setEnabled(false);
+                ibtnCreateImage.setEnabled(false);
+                ibtnCreateUnit.setEnabled(false);
+                btnSaveReport.setEnabled(true);
+                break;
+            case CLICK_SAVE:
+                ibtnCreateModule.setEnabled(true);
+                btnSaveReport.setEnabled(true);
                 break;
         }
     }
@@ -521,6 +671,8 @@ public class ReportFragment extends Fragment implements IBaseView {
 
     @Override
     public void initDataAndView(View rootView) throws Exception {
+        database = DAO.getInstance(SqlHelper.getIntance().openDB(), getContext());
+
         rvListReport.setLayoutManager(new LinearLayoutManager(getContext()));
         rvListReport.setHasFixedSize(true);
         Animation animation = AnimationUtils.loadAnimation(
@@ -553,26 +705,10 @@ public class ReportFragment extends Fragment implements IBaseView {
         void onDismiss();
     }
 
-    private static class DataViewIncludeReport extends LinearLayout {
-        View rowView;
-
-        /*view require*/
-        LinearLayout llModule;
-        List<View> listView = new ArrayList<>();
-
-        public DataViewIncludeReport(Context context) {
-            super(context);
-            rowView = LayoutInflater.from(context).inflate(R.layout.include_report_question, null);
-            initView(context);
-
-        }
-
-        private void initView(Context context) {
-            llModule = (LinearLayout) rowView.findViewById(R.id.ll_module);
-
-            listView.add(llModule);
-        }
-
-
+    public enum CLICK_TOOLS {
+        CLICK_ADD,
+        CLICK_MODULE,
+        CLICK_QUESTION,
+        CLICK_SAVE;
     }
 }

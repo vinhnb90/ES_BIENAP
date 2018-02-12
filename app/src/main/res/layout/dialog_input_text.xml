@@ -36,6 +36,7 @@
             </RelativeLayout>
 
             <EditText
+                android:textColor="@color/tththn_text_less_black"
                 android:id="@+id/et_name_report"
                 style="@style/etStyle1"
                 android:layout_width="match_parent"

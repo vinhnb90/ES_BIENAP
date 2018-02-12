@@ -160,7 +160,7 @@ public class MainActivity extends BaseActivity implements
                         break;
 
                     case R.id.bbar_edit_note_menu:
-                        mReportFragment = new ReportFragment(mode);
+                        mReportFragment = ReportFragment.newInstance(mode);
                         ft.replace(rlReplaceFragment.getId(), mReportFragment).commit();
 
                         bottomBar.setVisibility(View.VISIBLE);
