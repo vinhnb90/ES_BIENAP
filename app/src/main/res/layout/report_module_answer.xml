@@ -30,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/xml_retangle"
-            android:text="ahdh1456465464" />
+            android:hint="Nhập tiêu đề câu hỏi..." />
 
     </LinearLayout>
 

@@ -25,5 +25,8 @@ public class ReportAnswerChoose extends AbModuleReport {
         this.llParent.invalidate();
     }
 
+    public EditText getEtChoose() {
+        return etChoose;
+    }
 }
 

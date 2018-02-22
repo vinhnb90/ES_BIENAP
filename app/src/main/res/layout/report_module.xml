@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/title_module"
                 android:background="@drawable/xml_retangle"
-                android:text="ahdh1456465464" />
+                android:hint="Nhập tên module..." />
 
 
         </RelativeLayout>

@@ -21,20 +21,21 @@ public class TABLE_QUESTION_REPORT {
     private int ID_TABLE_QUESTION_REPORT;
 
     @Collumn(name = "ID_TABLE_REPORT", type = TYPE.INTEGER, other = "NOT NULL")
-    private String ID_TABLE_REPORT;
-
-    @Collumn(name = "ID_TABLE_ELEMENT_REPORT", type = TYPE.INTEGER, other = "NOT NULL")
-    private String ID_TABLE_ELEMENT_REPORT;
+    private int ID_TABLE_REPORT;
 
     @Collumn(name = "QUESTION_NAME", type = TYPE.TEXT, other = "NOT NULL")
     private String QUESTION_NAME;
+
+    @Collumn(name = "MODE", type = TYPE.TEXT, other = "NOT NULL")
+    private String MODE;
+
 
     @EnumNameCollumn()
     public enum table {
         ID_TABLE_QUESTION_REPORT,
         ID_TABLE_REPORT,
-        ID_TABLE_ELEMENT_REPORT,
-        QUESTION_NAME;
+        QUESTION_NAME,
+        MODE;
 
         public static String getName() {
             return "TABLE_QUESTION_REPORT";
@@ -45,13 +46,15 @@ public class TABLE_QUESTION_REPORT {
     }
 
     public TABLE_QUESTION_REPORT(@Params(name = "ID_TABLE_QUESTION_REPORT") int ID_TABLE_QUESTION_REPORT,
-                                 @Params(name = "ID_TABLE_REPORT") String ID_TABLE_REPORT,
-                                 @Params(name = "ID_TABLE_ELEMENT_REPORT") String ID_TABLE_ELEMENT_REPORT,
-                                 @Params(name = "QUESTION_NAME") String QUESTION_NAME) {
+                                 @Params(name = "ID_TABLE_REPORT") int ID_TABLE_REPORT,
+                                 @Params(name = "QUESTION_NAME") String QUESTION_NAME,
+                                 @Params(name = "MODE") String MODE
+                                 ) {
         this.ID_TABLE_QUESTION_REPORT = ID_TABLE_QUESTION_REPORT;
         this.ID_TABLE_REPORT = ID_TABLE_REPORT;
-        this.ID_TABLE_ELEMENT_REPORT = ID_TABLE_ELEMENT_REPORT;
         this.QUESTION_NAME = QUESTION_NAME;
+        this.MODE= MODE;
+
     }
 
     public int getID_TABLE_QUESTION_REPORT() {
@@ -62,21 +65,12 @@ public class TABLE_QUESTION_REPORT {
         this.ID_TABLE_QUESTION_REPORT = ID_TABLE_QUESTION_REPORT;
     }
 
-    public String getID_TABLE_REPORT() {
+    public int getID_TABLE_REPORT() {
         return ID_TABLE_REPORT;
     }
 
-    public TABLE_QUESTION_REPORT setID_TABLE_REPORT(String ID_TABLE_REPORT) {
+    public TABLE_QUESTION_REPORT setID_TABLE_REPORT(int ID_TABLE_REPORT) {
         this.ID_TABLE_REPORT = ID_TABLE_REPORT;
-        return this;
-    }
-
-    public String getID_TABLE_ELEMENT_REPORT() {
-        return ID_TABLE_ELEMENT_REPORT;
-    }
-
-    public TABLE_QUESTION_REPORT setID_TABLE_ELEMENT_REPORT(String ID_TABLE_ELEMENT_REPORT) {
-        this.ID_TABLE_ELEMENT_REPORT = ID_TABLE_ELEMENT_REPORT;
         return this;
     }
 
@@ -88,5 +82,12 @@ public class TABLE_QUESTION_REPORT {
         this.QUESTION_NAME = QUESTION_NAME;
     }
 
+    public String getMODE() {
+        return MODE;
+    }
+
+    public void setMODE(String MODE) {
+        this.MODE = MODE;
+    }
 }
 

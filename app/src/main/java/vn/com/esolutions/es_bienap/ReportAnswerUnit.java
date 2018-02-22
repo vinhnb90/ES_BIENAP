@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 
 public class ReportAnswerUnit extends AbModuleReport {
     private EditText etUnit;
-    private EditText etNameCapture;
     private View rowView;
     private LinearLayout llParent;
 
@@ -26,5 +25,9 @@ public class ReportAnswerUnit extends AbModuleReport {
         this.llParent.setOrientation(LinearLayout.VERTICAL);
         this.llParent.addView(this);
         this.llParent.invalidate();
+    }
+
+    public EditText getEtUnit() {
+        return etUnit;
     }
 }

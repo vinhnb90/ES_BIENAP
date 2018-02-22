@@ -29,5 +29,8 @@ public class ReportAnswerText extends AbModuleReport {
         this.llParent.invalidate();
     }
 
+    public EditText getEtText() {
+        return etText;
+    }
 }
 

@@ -36,8 +36,9 @@ public class ReportAnswer extends AbModuleReport {
         llReportAnswer = (LinearLayout) rowView.findViewById(R.id.ll_module_answer_include);
 
 
-        tvTitleQuestion.setText("Câu khảo sát thứ " + (this.indexAnswer + 1));
-        tvTitleQuestionAnswer.setText("Nội dung cần khảo sát câu " + (this.indexAnswer + 1) + " bao gồm:");
+        int indexShow = this.indexAnswer + 1;
+        tvTitleQuestion.setText("Câu khảo sát thứ " + indexShow);
+        tvTitleQuestionAnswer.setText("Nội dung cần khảo sát câu " + indexShow + " bao gồm:");
         this.addView(rowView);
 
         this.llParent.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));

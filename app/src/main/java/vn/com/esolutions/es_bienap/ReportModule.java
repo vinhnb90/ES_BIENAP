@@ -52,6 +52,10 @@ public class ReportModule extends AbModuleReport {
         return (LinearLayout)this.findViewById(R.id.ll_module);
     }
 
+    public EditText getEtNameModule() {
+        return etNameModule;
+    }
+
     public ReportModule addViewInclude(final LinearLayout view) {
         this.viewList.add(view);
         this.llReportModule.addView(view);

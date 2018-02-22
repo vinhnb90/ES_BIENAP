@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -37,6 +38,8 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import esolutions.com.esdatabaselib.baseSqlite.LazyList;
 import esolutions.com.esdatabaselib.baseSqlite.SqlHelper;
+import vn.com.esolutions.es_bienap.database.TABLE_ANSWER_REPORT;
+import vn.com.esolutions.es_bienap.database.TABLE_QUESTION_REPORT;
 import vn.com.esolutions.es_bienap.database.TABLE_REPORT;
 
 import static vn.com.esolutions.es_bienap.Common.BUNDLE_MODE;
@@ -155,7 +158,17 @@ public class ReportFragment extends Fragment implements IBaseView {
     /*đang xử lý các tại module nào*/
     private int moduleIndex = -1;
     /*đang xử lý các câu hỏi tại câu hỏi nào*/
-    private int questionIndex = -1 ;
+    private int questionIndex = -1;
+
+    /*khi click vao tool answer ở lần đầu tiên mới save dữ liệu câu hỏi, ngược lại thì đã có rồi*/
+    private boolean isCreateDBQuestionRow;
+
+    private TABLE_REPORT tableReport;
+    private List<TABLE_QUESTION_REPORT> listTableQuestionReport = new ArrayList<>();
+
+    private HashMap<Integer, List<TABLE_ANSWER_REPORT>> hashMapAnswer = new HashMap<>();
+    private List<TABLE_ANSWER_REPORT> listTableAnswerReport = new ArrayList<>();
+
 
     public static ReportFragment newInstance(
 //            String param1, String param2
@@ -165,6 +178,14 @@ public class ReportFragment extends Fragment implements IBaseView {
         args.putSerializable(BUNDLE_MODE, mode);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            mMode = (Common.MODE) getArguments().getSerializable(BUNDLE_MODE);
+        }
     }
 
     //region click button menu top
@@ -477,12 +498,51 @@ public class ReportFragment extends Fragment implements IBaseView {
         //setup view
         llReportModule.addView(new ReportView(getContext()));
         llReportModule.invalidate();
+
+        //write db
+        tableReport = new TABLE_REPORT();
+        tableReport.setREPORT_NAME(result);
+        tableReport.setMODE(mMode.content);
+        tableReport.setREPORT_STATUS(Common.STATUS.EDIT.content);
+        tableReport.setREPORT_DATE(Common.getDateTimeNow(Common.DATE_TIME_TYPE.sqlite2));
+        try {
+            tableReport.setID_TABLE_REPORT((int) database.insert(TABLE_REPORT.class, tableReport));
+        } catch (Exception e) {
+            e.printStackTrace();
+            mListener.showMessage("Gặp lỗi khi lưu dữ liệu báo cáo!", null, null);
+        }
     }
 
     //endregion
 
 
     //region click button region add
+    @OnClick(R.id.btn_save_report)
+    public void clickIBtnSaveReport(View view) {
+        //nếu cờ tạo db câu hỏi mới đc bật thì thu thập các câu trả lời và lưu lại những gì còn sót lại
+        if (isCreateDBQuestionRow) {
+            for (int i = 0; i < listTableAnswerReport.size(); i++) {
+                try {
+                    listTableAnswerReport.get(i).setID_TABLE_ANSWER_REPORT((int) database.insert(TABLE_ANSWER_REPORT.class, listTableAnswerReport.get(i)));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    mListener.showMessage("Gặp lỗi khi lưu dữ liệu mẫu câu trả lời!", null, null);
+                }
+            }
+            int key = listTableQuestionReport.get(listTableQuestionReport.size() - 1).getID_TABLE_QUESTION_REPORT();
+            hashMapAnswer.put(key, listTableAnswerReport);
+
+            Toast.makeText(getContext(), "Tự động lưu thành công!", Toast.LENGTH_SHORT).show();
+        }
+
+        //reset cờ để tạo db câu hỏi mới
+        isCreateDBQuestionRow = false;
+        listTableAnswerReport.clear();
+
+        mListener.showMessage("Phiếu khảo sát đã tạo thành công!", null, null);
+        //đổi button
+    }
+
     @OnClick(R.id.ibtn_create_module)
     public void clickIBtnCreateModule(View view) {
         Common.runAnimationClickView(view, R.anim.twinking_view, TIME_DELAY_CLICK_SHORT);
@@ -494,9 +554,15 @@ public class ReportFragment extends Fragment implements IBaseView {
                 ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
                 new ReportModule(getContext(), reportView.getLLInclude());
                 moduleIndex = reportView.getLLInclude().getChildCount() - 1;
-                questionIndex = 0;
+
+                //clear dữ liệu question và answer tạm
+                questionIndex = -1;
+                isCreateDBQuestionRow = false;
+                listTableAnswerReport.clear();
             }
         }, TIME_DELAY_CLICK_SHORT);
+
+
     }
 
     @OnClick(R.id.ibtn_create_question)
@@ -516,12 +582,42 @@ public class ReportFragment extends Fragment implements IBaseView {
                     return;
                 }
 
-                ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(reportView.getChildCount() - 1);
-                new ReportAnswer(getContext(), reportModule.getLLInclude(), reportView.getLLInclude().getChildCount() - 1);
+                ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(moduleIndex);
+                if (TextUtils.isEmpty(reportModule.getEtNameModule().getText().toString())) {
+                    reportModule.getEtNameModule().setError("Không để trống!");
+                    reportModule.getEtNameModule().requestFocus();
+                    reportModule.invalidate();
 
+                    return;
+                }
+
+
+                new ReportAnswer(getContext(), reportModule.getLLInclude(), questionIndex);
                 llReportModule.invalidate();
-                moduleIndex = llReportModule.getChildCount() - 1;
-                questionIndex = reportView.getChildCount() - 1;
+
+                moduleIndex = reportView.getLLInclude().getChildCount() - 1;
+                questionIndex = reportModule.getLLInclude().getChildCount() - 1;
+
+
+                //nếu cờ tạo db câu hỏi mới đc bật thì thu thập các câu trả lời và lưu lại
+                if (isCreateDBQuestionRow) {
+                    for (int i = 0; i < listTableAnswerReport.size(); i++) {
+                        try {
+                            listTableAnswerReport.get(i).setID_TABLE_ANSWER_REPORT((int) database.insert(TABLE_ANSWER_REPORT.class, listTableAnswerReport.get(i)));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            mListener.showMessage("Gặp lỗi khi lưu dữ liệu mẫu câu trả lời!", null, null);
+                        }
+                    }
+                    int key = listTableQuestionReport.get(listTableQuestionReport.size() - 1).getID_TABLE_QUESTION_REPORT();
+                    hashMapAnswer.put(key, listTableAnswerReport);
+
+                    Toast.makeText(getContext(), "Tự động lưu thành công!", Toast.LENGTH_SHORT).show();
+                }
+
+                //reset cờ để tạo db câu hỏi mới
+                isCreateDBQuestionRow = false;
+                listTableAnswerReport.clear();
 
             }
         }, TIME_DELAY_CLICK_SHORT);
@@ -537,8 +633,39 @@ public class ReportFragment extends Fragment implements IBaseView {
                 ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
                 ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(moduleIndex);
                 ReportAnswer reportAnswer = (ReportAnswer) reportModule.getLLInclude().getChildAt(questionIndex);
-                new ReportAnswerChoose(getContext(), reportAnswer.getLLInclude());
+
+
+                ReportAnswerChoose reportAnswerChoose = new ReportAnswerChoose(getContext(), reportAnswer.getLLInclude());
                 llReportModule.invalidate();
+
+
+                //write db
+                if (!isCreateDBQuestionRow) {
+                    isCreateDBQuestionRow = true;
+                    TABLE_QUESTION_REPORT tableQuestionReport = new TABLE_QUESTION_REPORT();
+                    tableQuestionReport.setQUESTION_NAME(reportModule.getEtNameModule().getText().toString());
+                    tableQuestionReport.setMODE(mMode.content);
+                    tableQuestionReport.setID_TABLE_REPORT(tableReport.getID_TABLE_REPORT());
+                    try {
+                        tableQuestionReport.setID_TABLE_QUESTION_REPORT((int) database.insert(TABLE_QUESTION_REPORT.class, tableQuestionReport));
+
+                        listTableQuestionReport.add(tableQuestionReport);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mListener.showMessage("Gặp lỗi khi lưu dữ liệu câu hỏi!", null, null);
+                    }
+                }
+
+
+                //Thu thập dữ liệu câu trả lời
+                int key = listTableQuestionReport.get(listTableQuestionReport.size() - 1).getID_TABLE_QUESTION_REPORT();
+                TABLE_ANSWER_REPORT tableAnswerReport = new TABLE_ANSWER_REPORT();
+                tableAnswerReport.setID_TABLE_QUESTION_REPORT(key);
+                tableAnswerReport.setTITLE_ANSWER(reportAnswerChoose.getEtChoose().getText().toString());
+                tableAnswerReport.setMODE(mMode.content);
+                tableAnswerReport.setTYPE_ELEMENT_REPORT(Common.TYPE_ELEMENT_REPORT.CHECKBOX.content);
+                listTableAnswerReport.add(tableAnswerReport);
+
 
             }
         }, TIME_DELAY_CLICK_SHORT);
@@ -554,8 +681,34 @@ public class ReportFragment extends Fragment implements IBaseView {
                 ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
                 ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(moduleIndex);
                 ReportAnswer reportAnswer = (ReportAnswer) reportModule.getLLInclude().getChildAt(questionIndex);
-                new ReportAnswerImage(getContext(), reportAnswer.getLLInclude());
+                ReportAnswerImage reportAnswerImage = new ReportAnswerImage(getContext(), reportAnswer.getLLInclude());
                 llReportModule.invalidate();
+
+                //write db
+                if (!isCreateDBQuestionRow) {
+                    isCreateDBQuestionRow = true;
+                    TABLE_QUESTION_REPORT tableQuestionReport = new TABLE_QUESTION_REPORT();
+                    tableQuestionReport.setQUESTION_NAME(reportModule.getEtNameModule().getText().toString());
+                    tableQuestionReport.setMODE(mMode.content);
+                    tableQuestionReport.setID_TABLE_REPORT(tableReport.getID_TABLE_REPORT());
+                    try {
+                        tableQuestionReport.setID_TABLE_QUESTION_REPORT((int) database.insert(TABLE_QUESTION_REPORT.class, tableQuestionReport));
+                        listTableQuestionReport.add(tableQuestionReport);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mListener.showMessage("Gặp lỗi khi lưu dữ liệu câu hỏi!", null, null);
+                    }
+                }
+
+
+                //Thu thập dữ liệu câu trả lời
+                int key = listTableQuestionReport.get(listTableQuestionReport.size() - 1).getID_TABLE_QUESTION_REPORT();
+                TABLE_ANSWER_REPORT tableAnswerReport = new TABLE_ANSWER_REPORT();
+                tableAnswerReport.setID_TABLE_QUESTION_REPORT(key);
+                tableAnswerReport.setTITLE_ANSWER(reportAnswerImage.getEtNameCapture().getText().toString());
+                tableAnswerReport.setMODE(mMode.content);
+                tableAnswerReport.setTYPE_ELEMENT_REPORT(Common.TYPE_ELEMENT_REPORT.IMAGE.content);
+                listTableAnswerReport.add(tableAnswerReport);
             }
         }, TIME_DELAY_CLICK_SHORT);
     }
@@ -571,8 +724,33 @@ public class ReportFragment extends Fragment implements IBaseView {
                 ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
                 ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(moduleIndex);
                 ReportAnswer reportAnswer = (ReportAnswer) reportModule.getLLInclude().getChildAt(questionIndex);
-                new ReportAnswerText(getContext(), reportAnswer.getLLInclude());
+                ReportAnswerText reportAnswerText = new ReportAnswerText(getContext(), reportAnswer.getLLInclude());
                 llReportModule.invalidate();
+
+                //write db
+                if (!isCreateDBQuestionRow) {
+                    isCreateDBQuestionRow = true;
+                    TABLE_QUESTION_REPORT tableQuestionReport = new TABLE_QUESTION_REPORT();
+                    tableQuestionReport.setQUESTION_NAME(reportModule.getEtNameModule().getText().toString());
+                    tableQuestionReport.setMODE(mMode.content);
+                    tableQuestionReport.setID_TABLE_REPORT(tableReport.getID_TABLE_REPORT());
+                    try {
+                        tableQuestionReport.setID_TABLE_QUESTION_REPORT((int) database.insert(TABLE_QUESTION_REPORT.class, tableQuestionReport));
+                        listTableQuestionReport.add(tableQuestionReport);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mListener.showMessage("Gặp lỗi khi lưu dữ liệu câu hỏi!", null, null);
+                    }
+                }
+
+                //Thu thập dữ liệu câu trả lời
+                int key = listTableQuestionReport.get(listTableQuestionReport.size() - 1).getID_TABLE_QUESTION_REPORT();
+                TABLE_ANSWER_REPORT tableAnswerReport = new TABLE_ANSWER_REPORT();
+                tableAnswerReport.setID_TABLE_QUESTION_REPORT(key);
+                tableAnswerReport.setTITLE_ANSWER(reportAnswerText.getEtText().getText().toString());
+                tableAnswerReport.setMODE(mMode.content);
+                tableAnswerReport.setTYPE_ELEMENT_REPORT(Common.TYPE_ELEMENT_REPORT.TEXT.content);
+                listTableAnswerReport.add(tableAnswerReport);
             }
         }, TIME_DELAY_CLICK_SHORT);
     }
@@ -587,8 +765,34 @@ public class ReportFragment extends Fragment implements IBaseView {
                 ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
                 ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(moduleIndex);
                 ReportAnswer reportAnswer = (ReportAnswer) reportModule.getLLInclude().getChildAt(questionIndex);
-                new ReportAnswerUnit(getContext(), reportAnswer.getLLInclude());
+                ReportAnswerUnit reportAnswerUnit = new ReportAnswerUnit(getContext(), reportAnswer.getLLInclude());
                 llReportModule.invalidate();
+
+                //write db
+                if (!isCreateDBQuestionRow) {
+                    isCreateDBQuestionRow = true;
+                    TABLE_QUESTION_REPORT tableQuestionReport = new TABLE_QUESTION_REPORT();
+                    tableQuestionReport.setQUESTION_NAME(reportModule.getEtNameModule().getText().toString());
+                    tableQuestionReport.setMODE(mMode.content);
+                    tableQuestionReport.setID_TABLE_REPORT(tableReport.getID_TABLE_REPORT());
+                    try {
+                        tableQuestionReport.setID_TABLE_QUESTION_REPORT((int) database.insert(TABLE_QUESTION_REPORT.class, tableQuestionReport));
+
+                        listTableQuestionReport.add(tableQuestionReport);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        mListener.showMessage("Gặp lỗi khi lưu dữ liệu câu hỏi!", null, null);
+                    }
+                }
+
+                //Thu thập dữ liệu câu trả lời
+                int key = listTableQuestionReport.get(listTableQuestionReport.size() - 1).getID_TABLE_QUESTION_REPORT();
+                TABLE_ANSWER_REPORT tableAnswerReport = new TABLE_ANSWER_REPORT();
+                tableAnswerReport.setID_TABLE_QUESTION_REPORT(key);
+                tableAnswerReport.setTITLE_ANSWER(reportAnswerUnit.getEtUnit().getText().toString());
+                tableAnswerReport.setMODE(mMode.content);
+                tableAnswerReport.setTYPE_ELEMENT_REPORT(Common.TYPE_ELEMENT_REPORT.TEXT.content);
+                listTableAnswerReport.add(tableAnswerReport);
             }
         }, TIME_DELAY_CLICK_SHORT);
     }
@@ -697,6 +901,7 @@ public class ReportFragment extends Fragment implements IBaseView {
 
     @Override
     public void initDataAndView(View rootView) throws Exception {
+
         database = DAO.getInstance(SqlHelper.getIntance().openDB(), getContext());
 
         rvListReport.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -712,16 +917,6 @@ public class ReportFragment extends Fragment implements IBaseView {
     public void setAction(Bundle savedInstanceState) throws Exception {
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnIReportFragment {
         void showMessage(String message, @Nullable String content, @Nullable final ISnackbarIteractions actionOK);
     }

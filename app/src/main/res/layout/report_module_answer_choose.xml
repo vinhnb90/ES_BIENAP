@@ -47,5 +47,5 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/iv_title"
         android:background="@drawable/xml_retangle"
-        android:text="Hiện trạng" />
+        android:text="Nhập tiêu đề..." />
 </RelativeLayout>

@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:background="@drawable/xml_retangle"
         android:id="@+id/et_name_image"
-        android:text="Ảnh hiện trường"
+        android:text="Nhập tiêu đề..."
          />
 
 </RelativeLayout>

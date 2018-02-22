@@ -24,4 +24,8 @@ public class ReportAnswerImage extends AbModuleReport {
         this.llParent.addView(this);
         this.llParent.invalidate();
     }
+
+    public EditText getEtNameCapture() {
+        return etNameCapture;
+    }
 }

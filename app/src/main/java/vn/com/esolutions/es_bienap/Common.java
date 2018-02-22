@@ -44,6 +44,15 @@ public class Common {
         }
     }
 
+    public static <T> List<T> cloneList(List<T> listcloneList) {
+        ArrayList<T> newArrayList = (ArrayList<T>) ((ArrayList<T>) listcloneList).clone();
+
+        List<T> cloneListResult = new ArrayList<>();
+        cloneListResult.addAll(newArrayList);
+
+        return newArrayList;
+    }
+
     public enum STATUS {
         EDIT("Đang chỉnh sửa"),
         PUBLISH("Đã được phát hành"),
@@ -64,14 +73,27 @@ public class Common {
         }
     }
 
-    public static <T> List<T> cloneList(List<T> listcloneList) {
-        ArrayList<T> newArrayList = (ArrayList<T>) ((ArrayList<T>) listcloneList).clone();
+    public enum TYPE_ELEMENT_REPORT {
+        CHECKBOX("Ô lựa chọn"),
+        TEXT("Ký tự"),
+        IMAGE("Chụp ảnh"),
+        UNIT("Đơn vị");
 
-        List<T> cloneListResult = new ArrayList<>();
-        cloneListResult.addAll(newArrayList);
+        public String content;
 
-        return newArrayList;
+        TYPE_ELEMENT_REPORT(String content) {
+            this.content = content;
+        }
+
+        public static TYPE_ELEMENT_REPORT findTYPE_ELEMENT_REPORT(String content) {
+            for (TYPE_ELEMENT_REPORT typeElementReport : values()) {
+                if (typeElementReport.content.equalsIgnoreCase(content))
+                    return typeElementReport;
+            }
+            return null;
+        }
     }
+
 
     //region Date time
     public enum DATE_TIME_TYPE {
