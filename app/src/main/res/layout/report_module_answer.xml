@@ -11,11 +11,11 @@
 
     <LinearLayout
         android:id="@+id/ll_2"
-        tool:visibility="visible"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
+
 
         <TextView
             android:id="@+id/tv_title_question"
@@ -29,7 +29,7 @@
             style="@style/tvStyle2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
+            android:background="@drawable/xml_retangle"
             android:text="ahdh1456465464" />
 
     </LinearLayout>
@@ -42,20 +42,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Yêu cầu khảo sát câu hỏi 1"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <LinearLayout
         android:id="@+id/ll_module_answer_include"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <include android:visibility="gone" layout="@layout/report_module_answer_text"></include>
+       <!-- <include android:visibility="gone" layout="@layout/report_module_answer_text"></include>
 
         <include android:visibility="gone" layout="@layout/report_module_answer_unit"></include>
 
         <include android:visibility="gone" layout="@layout/report_module_answer_choose"></include>
 
-        <include android:visibility="gone" layout="@layout/report_module_answer_image"></include>
+        <include android:visibility="gone" layout="@layout/report_module_answer_image"></include>-->
     </LinearLayout>
 
 </LinearLayout>

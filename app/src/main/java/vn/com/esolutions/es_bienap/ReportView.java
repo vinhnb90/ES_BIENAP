@@ -21,12 +21,16 @@ public class ReportView extends AbModuleReport {
         llReport = (LinearLayout) rowView.findViewById(R.id.ll_report);
 
         //add view and validate
-        for (LinearLayout ll : viewList) {
-            llReport.addView(ll);
-        }
+//        for (LinearLayout ll : viewList) {
+//            llReport.addView(ll);
+//        }
 
         this.addView(rowView);
         super.invalidateView(rowView);
+    }
+
+    public LinearLayout getLLInclude(){
+        return (LinearLayout)this.findViewById(R.id.ll_report);
     }
 
     public ReportView setViewList(List<LinearLayout> viewList) {

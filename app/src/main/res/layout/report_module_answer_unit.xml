@@ -1,33 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/_24sdp"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/_10sdp"
     android:layout_marginBottom="@dimen/_10sdp"
     android:orientation="horizontal"
     tool:background="@color/colorBackgroundHome"
     tool:visibility="visible">
 
+    <ImageView
+        android:layout_marginTop="@dimen/_3sdp"
+        android:id="@+id/iv_icon1"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/ic_clear_search" />
 
     <ImageView
+        android:layout_toRightOf="@+id/iv_icon1"
+        android:layout_marginTop="@dimen/_3sdp"
+        android:id="@+id/iv_icon"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/_8sdp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
+        android:layout_height="wrap_content"
         android:src="@drawable/ic_unit" />
 
     <TextView
+        android:id="@+id/iv_title"
+        android:layout_toRightOf="@+id/iv_icon"
+        android:layout_marginRight="@dimen/_8sdp"
         style="@style/tvStyle2"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@null"
         android:text="Đơn vị" />
 
     <EditText
+        android:layout_toRightOf="@+id/iv_title"
         android:id="@+id/et_unit"
         style="@style/tvStyle2"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@drawable/xml_retangle"
         android:text="KWh" />
 
-</LinearLayout>
+</RelativeLayout>

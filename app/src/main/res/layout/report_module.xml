@@ -3,76 +3,84 @@
     xmlns:tool="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/xml_retangle"
     android:orientation="vertical"
-    android:padding="@dimen/_10sdp"
+
     tool:background="@color/colorBackgroundHome">
 
-
-    <RelativeLayout
-        android:id="@+id/ll_name_module"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:padding="@dimen/_10sdp"
         android:layout_marginBottom="@dimen/_10sdp"
-        android:orientation="vertical">
-
+        android:orientation="vertical"
+        android:background="@drawable/xml_retangle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
         <RelativeLayout
-            android:id="@+id/title_module"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/tvStyle3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:text="Tên module" />
-
-
-            <Button
-                android:id="@+id/btn_edit_module"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/_24sdp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@+id/btn_upload_row"
-                android:background="@null"
-                android:drawablePadding="@dimen/_5sdp"
-                android:drawableRight="@drawable/ic_edit_note_menu"
-                android:text="Chỉnh sửa"
-                android:textColor="@color/colorTextTitle"
-                android:textSize="@dimen/_7sdp" />
-        </RelativeLayout>
-
-
-        <EditText
-            android:id="@+id/et_module_name"
-            style="@style/tvStyle2"
+            android:id="@+id/ll_name_module"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/title_module"
-            android:background="@null"
-            android:text="ahdh1456465464" />
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/title_module"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    style="@style/tvStyle3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Tên module" />
 
 
-    </RelativeLayout>
+                <Button
+                    android:id="@+id/btn_edit_module"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/_24sdp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/btn_upload_row"
+                    android:background="@null"
+                    android:drawablePadding="@dimen/_5sdp"
+                    android:drawableRight="@drawable/ic_edit_note_menu"
+                    android:text="Chỉnh sửa"
+                    android:textColor="@color/colorTextTitle"
+                    android:textSize="@dimen/_7sdp" />
+            </RelativeLayout>
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/_1sdp"
-        android:layout_marginBottom="@dimen/_10sdp"
-        android:background="@color/colorItem" />
+            <EditText
+                android:id="@+id/et_module_name"
+                style="@style/tvStyle2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title_module"
+                android:background="@drawable/xml_retangle"
+                android:text="ahdh1456465464" />
 
-    <LinearLayout
-        android:id="@+id/ll_module"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <include android:visibility="gone" layout="@layout/report_module_answer"></include>
 
-        <include android:visibility="gone" layout="@layout/report_module_answer"></include>
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_1sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@color/colorItem" />
+
+        <LinearLayout
+            android:id="@+id/ll_module"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <!-- <include android:visibility="visible"
+                 tool:visibility="visible"
+                 layout="@layout/report_module_answer"></include>
+
+             <include android:visibility="visible" layout="@layout/report_module_answer"></include>-->
+        </LinearLayout>
     </LinearLayout>
+
 
 
 

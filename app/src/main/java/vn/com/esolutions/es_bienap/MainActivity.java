@@ -6,6 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -13,9 +14,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
+import android.widget.Toast;
 
+import com.jakewharton.scalpel.ScalpelFrameLayout;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -27,6 +32,9 @@ import vn.com.esolutions.es_bienap.DeviceFragment.IOnDeviceFragment;
 import vn.com.esolutions.es_bienap.HomeFragment.OnIHomeFragment;
 import vn.com.esolutions.es_bienap.ReportFragment.OnIReportFragment;
 
+import static android.support.v7.app.ActionBar.DISPLAY_SHOW_CUSTOM;
+import static android.support.v7.app.ActionBar.DISPLAY_SHOW_TITLE;
+import static android.widget.Toast.LENGTH_LONG;
 import static vn.com.esolutions.es_bienap.Common.BUNDLE_MODE;
 
 public class MainActivity extends BaseActivity implements
@@ -38,6 +46,8 @@ public class MainActivity extends BaseActivity implements
 
     /*View binding*/
     private Unbinder unbind;
+    @BindView(R.id.scalpel)
+    ScalpelFrameLayout scalpelView;
 
     @BindView(R.id.cl_main)
     CoordinatorLayout clMain;
@@ -57,7 +67,37 @@ public class MainActivity extends BaseActivity implements
     private HomeFragment mHomeFragment;
     private FragmentManager mFragmentManager;
     private DeviceFragment mDeviceFragment;
+    private boolean first;
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!scalpelView.isLayerInteractionEnabled()) {
+            return false;
+        }
+        menu.add("Draw Views")
+                .setCheckable(true)
+                .setChecked(scalpelView.isDrawingViews())
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override public boolean onMenuItemClick(MenuItem item) {
+                        boolean checked = !item.isChecked();
+                        item.setChecked(checked);
+                        scalpelView.setDrawViews(checked);
+                        return true;
+                    }
+                });
+        menu.add("Draw IDs")
+                .setCheckable(true)
+                .setChecked(scalpelView.isDrawingIds())
+                .setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                    @Override public boolean onMenuItemClick(MenuItem item) {
+                        boolean checked = !item.isChecked();
+                        item.setChecked(checked);
+                        scalpelView.setDrawIds(checked);
+                        return true;
+                    }
+                });
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +134,25 @@ public class MainActivity extends BaseActivity implements
     //region BaseActivity
     @Override
     public void initDataAndView(View rootView) throws Exception {
+        //3d view
+        scalpelView = (ScalpelFrameLayout)findViewById(R.id.scalpel);
+        Switch enabledSwitch = new Switch(this);
+        enabledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (first) {
+                    first = false;
+                    Toast.makeText(MainActivity.this, "First run!", LENGTH_LONG).show();
+                }
+
+                scalpelView.setLayerInteractionEnabled(isChecked);
+                invalidateOptionsMenu();
+            }
+        });
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(enabledSwitch);
+        actionBar.setDisplayOptions(DISPLAY_SHOW_TITLE | DISPLAY_SHOW_CUSTOM);
+
         super.setCoordinatorLayout(clMain);
 
         getBundle();
@@ -109,25 +168,25 @@ public class MainActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_camera:
-                return (true);
-
-            case R.id.menu_date:
-                return (true);
-
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.menu_camera:
+//                return (true);
+//
+//            case R.id.menu_date:
+//                return (true);
+//
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     private void setActionBarTittle(String message) {
         SpannableString s = new SpannableString(message);

@@ -152,6 +152,11 @@ public class ReportFragment extends Fragment implements IBaseView {
     private String hasError;
     private List<ReportModule> reportViewList = new ArrayList<>();
 
+    /*đang xử lý các tại module nào*/
+    private int moduleIndex = -1;
+    /*đang xử lý các câu hỏi tại câu hỏi nào*/
+    private int questionIndex = -1 ;
+
     public static ReportFragment newInstance(
 //            String param1, String param2
             Common.MODE mode) {
@@ -469,7 +474,7 @@ public class ReportFragment extends Fragment implements IBaseView {
         etReportname.setText(result);
         etReportname.setHint(result);
 
-        //serup view
+        //setup view
         llReportModule.addView(new ReportView(getContext()));
         llReportModule.invalidate();
     }
@@ -485,9 +490,11 @@ public class ReportFragment extends Fragment implements IBaseView {
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                reportViewList.add(new ReportModule(getContext()));
-                llReportModule.addView(reportViewList.get(reportViewList.size() - 1));
-                llReportModule.invalidate();
+//                llReportModule.addView(new ReportModule(getContext(),llReportModule));
+                ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
+                new ReportModule(getContext(), reportView.getLLInclude());
+                moduleIndex = reportView.getLLInclude().getChildCount() - 1;
+                questionIndex = 0;
             }
         }, TIME_DELAY_CLICK_SHORT);
     }
@@ -499,10 +506,23 @@ public class ReportFragment extends Fragment implements IBaseView {
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                reportViewList.get(reportViewList.size() - 1).addView(new ReportAnswer(getContext()));
-                reportViewList.get(reportViewList.size() - 1).invalidate();
-//                reportModule.getLlReportModule().addView(reportModule.getViewList().get(reportModule.getViewList().size() - 1));
-//                llReportModule.invalidate();
+                ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
+                if (reportView.getLLInclude().getChildCount() <= 0) {
+                    mListener.showMessage("Chưa khởi tạo module!", null, new ISnackbarIteractions() {
+                        @Override
+                        public void doIfPressOK() {
+                        }
+                    });
+                    return;
+                }
+
+                ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(reportView.getChildCount() - 1);
+                new ReportAnswer(getContext(), reportModule.getLLInclude(), reportView.getLLInclude().getChildCount() - 1);
+
+                llReportModule.invalidate();
+                moduleIndex = llReportModule.getChildCount() - 1;
+                questionIndex = reportView.getChildCount() - 1;
+
             }
         }, TIME_DELAY_CLICK_SHORT);
     }
@@ -514,10 +534,12 @@ public class ReportFragment extends Fragment implements IBaseView {
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ReportModule reportModule = reportViewList.get(reportViewList.size() - 1);
-                ReportAnswer reportAnswer = (ReportAnswer) reportModule.viewList.get(reportModule.viewList.size() - 1);
-                reportAnswer.addView(new ReportAnswerChoose(getContext()));
-                llReport.invalidate();
+                ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
+                ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(moduleIndex);
+                ReportAnswer reportAnswer = (ReportAnswer) reportModule.getLLInclude().getChildAt(questionIndex);
+                new ReportAnswerChoose(getContext(), reportAnswer.getLLInclude());
+                llReportModule.invalidate();
+
             }
         }, TIME_DELAY_CLICK_SHORT);
     }
@@ -529,10 +551,11 @@ public class ReportFragment extends Fragment implements IBaseView {
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ReportModule reportModule = reportViewList.get(reportViewList.size() - 1);
-                ReportAnswer reportAnswer = (ReportAnswer) reportModule.viewList.get(reportModule.viewList.size() - 1);
-                reportAnswer.addView(new ReportAnswerImage(getContext()));
-                llReport.invalidate();
+                ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
+                ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(moduleIndex);
+                ReportAnswer reportAnswer = (ReportAnswer) reportModule.getLLInclude().getChildAt(questionIndex);
+                new ReportAnswerImage(getContext(), reportAnswer.getLLInclude());
+                llReportModule.invalidate();
             }
         }, TIME_DELAY_CLICK_SHORT);
     }
@@ -541,28 +564,31 @@ public class ReportFragment extends Fragment implements IBaseView {
     public void clickIBtnCreateText(View view) {
         Common.runAnimationClickView(view, R.anim.twinking_view, TIME_DELAY_CLICK_SHORT);
         showEnableToolsButton(CLICK_TOOLS.CLICK_QUESTION);
+
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ReportModule reportModule = reportViewList.get(reportViewList.size() - 1);
-                ReportAnswer reportAnswer = (ReportAnswer) reportModule.viewList.get(reportModule.viewList.size() - 1);
-                reportAnswer.addView(new ReportAnswerText(getContext()));
-                llReport.invalidate();
+                ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
+                ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(moduleIndex);
+                ReportAnswer reportAnswer = (ReportAnswer) reportModule.getLLInclude().getChildAt(questionIndex);
+                new ReportAnswerText(getContext(), reportAnswer.getLLInclude());
+                llReportModule.invalidate();
             }
         }, TIME_DELAY_CLICK_SHORT);
     }
 
-    @OnClick(R.id.ibtn_create_text)
+    @OnClick(R.id.ibtn_create_unit)
     public void clickIBtnCreateUnit(View view) {
         Common.runAnimationClickView(view, R.anim.twinking_view, TIME_DELAY_CLICK_SHORT);
         showEnableToolsButton(CLICK_TOOLS.CLICK_QUESTION);
         view.postDelayed(new Runnable() {
             @Override
             public void run() {
-                ReportModule reportModule = reportViewList.get(reportViewList.size() - 1);
-                ReportAnswer reportAnswer = (ReportAnswer) reportModule.viewList.get(reportModule.viewList.size() - 1);
-                reportAnswer.addView(new ReportAnswerUnit(getContext()));
-                llReport.invalidate();
+                ReportView reportView = (ReportView) llReportModule.getChildAt(llReportModule.getChildCount() - 1);
+                ReportModule reportModule = (ReportModule) reportView.getLLInclude().getChildAt(moduleIndex);
+                ReportAnswer reportAnswer = (ReportAnswer) reportModule.getLLInclude().getChildAt(questionIndex);
+                new ReportAnswerUnit(getContext(), reportAnswer.getLLInclude());
+                llReportModule.invalidate();
             }
         }, TIME_DELAY_CLICK_SHORT);
     }
@@ -610,10 +636,10 @@ public class ReportFragment extends Fragment implements IBaseView {
             case CLICK_QUESTION:
                 ibtnCreateModule.setEnabled(true);
                 ibtnCreateQuestion.setEnabled(true);
-                ibtnCreateCheckbox.setEnabled(false);
-                ibtnCreateText.setEnabled(false);
-                ibtnCreateImage.setEnabled(false);
-                ibtnCreateUnit.setEnabled(false);
+                ibtnCreateCheckbox.setEnabled(true);
+                ibtnCreateText.setEnabled(true);
+                ibtnCreateImage.setEnabled(true);
+                ibtnCreateUnit.setEnabled(true);
                 btnSaveReport.setEnabled(true);
                 break;
             case CLICK_SAVE:
@@ -698,6 +724,13 @@ public class ReportFragment extends Fragment implements IBaseView {
      */
     public interface OnIReportFragment {
         void showMessage(String message, @Nullable String content, @Nullable final ISnackbarIteractions actionOK);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        moduleIndex = -1;
+        questionIndex = -1;
     }
 
     public interface IOnDismisDialog {
